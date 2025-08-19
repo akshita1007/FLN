@@ -13,6 +13,7 @@
   transition: width 0.3s ease;
   overflow: hidden;
   min-height: 100vh;
+  
 }
 
 .drawer.open {
