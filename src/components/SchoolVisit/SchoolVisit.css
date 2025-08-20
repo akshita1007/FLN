@@ -1,0 +1,19 @@
+@keyframes borderShimmer {
+    0% {
+      border-image-source: linear-gradient(90deg, #ffffff, #ff00ff, #ffffff);
+    }
+    50% {
+      border-image-source: linear-gradient(90deg, #ffffff, #00ffff, #ffffff);
+    }
+    100% {
+      border-image-source: linear-gradient(90deg, #ffffff, #ff00ff, #ffffff);
+    }
+  }
+  
+  .card-shimmer {
+    border-radius: 15px;
+    border: 5px solid transparent;
+    border-image: linear-gradient(90deg, #ffffff, #ff00ff, #ffffff) 1;
+    animation: borderShimmer 2s linear infinite;
+  }
+  
