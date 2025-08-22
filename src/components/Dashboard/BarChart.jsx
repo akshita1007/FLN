@@ -128,7 +128,7 @@ export default function BarChart(props) {
             alignItems: "center",
             flexDirection: "column",
             justifyContent: "center",
-            backgroundColor: "#fff",
+            backgroundColor: "#fffff",
             color: "#000",
           }}
         >

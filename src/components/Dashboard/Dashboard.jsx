@@ -27,6 +27,7 @@ import surveyicon from "../../Assets/icons/survey.png";
 import totalCACicon from "../../Assets/icons/totalCAC.png";
 import totalSchoolicon from "../../Assets/icons/totalSchool.png";
 import visitedSchoolicon from "../../Assets/icons/visitedSchool.png";
+import { blue } from "@mui/material/colors";
 
 // Formal color palette
 const formalPalette = {
@@ -74,9 +75,12 @@ const StyledCard = styled(Card)({
   borderRadius: "12px",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
   transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+  // boxShadow: "none",    
   "&:hover": {
     transform: "translateY(-5px)",
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+    boxShadow: "none",    // ✅ No shadow
+    transition: "transform 0.3s ease-in-out",
   },
   animation: `${fadeIn} 0.8s ease-out`,
   height: "100%",
@@ -96,7 +100,7 @@ const CustomCard = styled(Card)(({ color }) => ({
   alignItems: "center",
   padding: "10px",
   gap: "20px",
-  background: "#FFFFFF",
+  background: color,//"#FFFFFF",
   height: "100%",
 }));
 
@@ -201,25 +205,27 @@ const Dashboard = () => {
       title: "Total Schools",
       total: cardCount.totalSchool || 0,
       icon: totalSchoolicon,
-      color: "#db9a34", // Professional blue  #3498DB
+       background: "linear-gradient(135deg, #74ebd5 0%, #3498DB 100%)",
+      color: "linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%)",  
+      
     },
     {
       title: "Total CACs",
       total: cardCount.totalCaC || 0,
       icon: totalCACicon,
-      color: "#2ECC71", // Green
+      color: "linear-gradient(135deg, #FAD961 0%, #F76B1C 100%)", // Green
     },
     {
       title: "Total Survey",
       total: cardCount.totalSubmission || 0,
       icon: surveyicon,
-      color: "#9B59B6", // Purple
+      color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", // Purple
     },
     {
       title: "Total Visited School",
       total: cardCount.visitSchoolCount || 0,
       icon: visitedSchoolicon,
-      color: "#F1C40F", // Yellow
+      color: "linear-gradient(135deg, #80e943ff 0%, #38f9d7 100%)", // Yellow
     },
   ];
 
@@ -236,7 +242,7 @@ const Dashboard = () => {
   );
 
   return (
-    <StyledContainer maxWidth="xl">
+    <Grid  container>
       <Grid container spacing={4} sx={{ marginBottom: 4 }}>
         <Grid item xs={12}>
           <Header />
@@ -248,6 +254,7 @@ const Dashboard = () => {
             </CardContent>
           </StyledCard>
         </Grid>
+        <Grid container spacing={2}  sx={{marginLeft:3,marginRight:2}}>
         {cardWidgets.map((card, index) => (
           <Grid
             item
@@ -256,10 +263,12 @@ const Dashboard = () => {
             md={3}
             key={index}
             sx={{ animation: `${slideInLeft} 0.5s ease-out ${index * 0.1}s` }}
+            // ml={2}
           >
             {renderCard(card.title, card.total, card.icon, card.color)}
           </Grid>
         ))}
+        </Grid>
       </Grid>
 
       <Divider sx={{ my: 4, borderColor: formalPalette.border }} />
@@ -322,7 +331,7 @@ const Dashboard = () => {
           )}
         </Grid>
       )}
-    </StyledContainer>
+    </Grid>
   );
 };
 export default Dashboard;

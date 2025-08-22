@@ -276,7 +276,7 @@ const DropDown= React.forwardRef(({
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         {stepDataList && (
           <Grid
             item

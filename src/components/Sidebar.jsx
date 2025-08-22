@@ -13,7 +13,7 @@ import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
 const formalPalette = {
-  background: "#246a89", //2C3E50
+  background: "#1E293B", //2C3E50
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
@@ -75,12 +75,13 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
   alignItems: "center",
   width: "100%",
   padding: isCollapsed ? "12px 0" : "12px 20px",
-  justifyContent: isCollapsed ? "center" : "flex-start",
+  
   cursor: "pointer",
   position: "relative",
   color: formalPalette.textSecondary,
   background: isActive ? formalPalette.hover : "transparent",
   boxSizing: "border-box",
+
   "&:before": {
     content: '""',
     position: "absolute",
@@ -93,21 +94,25 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
     borderRadius: "0 4px 4px 0",
     transition: "background 0.3s ease",
   },
-  "&:hover": {
-    color: formalPalette.textPrimary,
-    background: formalPalette.hover,
-  },
+
   "& .icon-img": {
     width: "21px",
     height: "21px",
     filter: "invert(70%)",
     transition: "transform 0.3s ease, filter 0.3s ease",
+    marginLeft: isCollapsed ? "15px" : "0", // ✅ Remove extra offset
   },
+
+  "&:hover": {
+    color: formalPalette.textPrimary,
+    background: formalPalette.hover,
+  },
+
   "&:hover .icon-img": {
     transform: "scale(1.1)",
     filter: "invert(100%)",
   },
-  // Active state styling
+
   "&.active-state": {
     color: formalPalette.textPrimary,
     background: formalPalette.hover,
@@ -116,6 +121,8 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
     },
   },
 }));
+
+
 
 const Title = styled(motion.span)(({ isCollapsed }) => ({
   marginLeft: "15px",
@@ -138,7 +145,7 @@ const SIDEBAR_ITEMS = [
     id: "analysis",
     title: "Analysis",
     image: Analysis,
-    paths: ["/dashboard"],
+    paths: ["/analysis"],
   },
   { id: "list", title: "CAC List", image: List, paths: ["/dashboard"] },
   {
