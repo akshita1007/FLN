@@ -13,7 +13,7 @@ import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
 const formalPalette = {
-  background:"#00194d", //2C3E50  //"#1E293B"
+  background: "#00194d", //2C3E50  //"#1E293B"
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
@@ -36,6 +36,9 @@ const SidebarWrapper = styled("div")(({ isCollapsed }) => ({
 }));
 
 const StyledSidebar = styled(motion.div)(({ isCollapsed }) => ({
+  position: "fixed", // This is the key change
+  top: 0, // Position it at the top of the viewport
+  left: 0, // Position it at the left of the viewport
   height: "100vh",
   padding: "20px 0",
   background: formalPalette.background,
@@ -75,7 +78,7 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
   alignItems: "center",
   width: "100%",
   padding: isCollapsed ? "12px 0" : "12px 20px",
-  
+
   cursor: "pointer",
   position: "relative",
   color: formalPalette.textSecondary,
@@ -121,8 +124,6 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
     },
   },
 }));
-
-
 
 const Title = styled(motion.span)(({ isCollapsed }) => ({
   marginLeft: "15px",
@@ -182,7 +183,10 @@ export default function Sidebar() {
         initial={{ width: "60px" }}
         animate={{ width: isCollapsed ? "60px" : "210px" }}
       >
-        <StyledCollapseButton isCollapsed={isCollapsed} onClick={() => setIsCollapsed(!isCollapsed)}>
+        <StyledCollapseButton
+          isCollapsed={isCollapsed}
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
           {isCollapsed ? (
             <MenuIcon sx={{ color: formalPalette.textPrimary, fontSize: 26 }} />
           ) : (
@@ -195,7 +199,10 @@ export default function Sidebar() {
                 FLN
               </motion.h3>
               <MenuOpenIcon
-                sx={{ color: formalPalette.textPrimary, marginLeft: "auto" }}
+                sx={{
+                  color: formalPalette.textPrimary,
+                  marginLeft: "auto",
+                }}
               />
             </>
           )}
@@ -210,9 +217,7 @@ export default function Sidebar() {
             className={activeTab === item.id ? "active-state" : ""}
           >
             <img className="icon-img" src={item.image} alt={`${item.title} icon`} />
-            <Title isCollapsed={isCollapsed}>
-              {item.title}
-            </Title>
+            <Title isCollapsed={isCollapsed}>{item.title}</Title>
           </StyledSidebarItem>
         ))}
       </StyledSidebar>
