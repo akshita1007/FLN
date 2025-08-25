@@ -13,7 +13,7 @@ import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
 const formalPalette = {
-  background:"rgb(3, 3, 148)", //2C3E50  //"#1E293B"
+  background:"#00194d", //2C3E50  //"#1E293B"
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
