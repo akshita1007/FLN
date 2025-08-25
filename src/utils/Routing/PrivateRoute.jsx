@@ -15,7 +15,9 @@ const PrivateRoute = ({ children }) => {
     <div className="app">
         
         <Sidebar/>
+        <div style={{paddingLeft:"20px",paddingRight:"20px",width: "100%"}}>
         {children}
+        </div>
         </div>
     </MotionConfig>
     <ToastContainer/>
