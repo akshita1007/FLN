@@ -13,7 +13,7 @@ import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
 const formalPalette = {
-  background: "#00194d", //2C3E50  //"#1E293B"
+  background: "#1a2980" ,     //"#00194d" //2C3E50  //"#1E293B"
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
@@ -81,7 +81,7 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
 
   cursor: "pointer",
   position: "relative",
-  color: formalPalette.textSecondary,
+  color: formalPalette.textPrimary,
   background: isActive ? formalPalette.hover : "transparent",
   boxSizing: "border-box",
 
@@ -101,7 +101,10 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
   "& .icon-img": {
     width: "21px",
     height: "21px",
-    filter: "invert(70%)",
+    padding:"3px",
+    backgroundColor:"#fff",
+    borderRadius: "5px",
+    // filter: "invert(70%)",
     transition: "transform 0.3s ease, filter 0.3s ease",
     marginLeft: isCollapsed ? "15px" : "0", // ✅ Remove extra offset
   },
@@ -113,14 +116,15 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
 
   "&:hover .icon-img": {
     transform: "scale(1.1)",
-    filter: "invert(100%)",
+    filter: "drop-shadow(2px 4px 6px black)",
   },
 
   "&.active-state": {
     color: formalPalette.textPrimary,
     background: formalPalette.hover,
     "& .icon-img": {
-      filter: "invert(100%)",
+      filter: "drop-shadow(2px 4px 6px black)",
+
     },
   },
 }));

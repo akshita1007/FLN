@@ -10,7 +10,7 @@ const ChartOne = ({data}) => {
     <Grid item xs={12} md={12} >
                   <Card
                     sx={{
-                      backgroundColor: Colors.primary.Extra,
+                      backgroundColor:'#fff',
                       borderRadius: "8px",
                       padding: "10px",
                     }}

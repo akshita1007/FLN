@@ -300,11 +300,11 @@ const Dashboard = () => {
                 case "किस कक्षा का अवलोकन किया गया?":
                   return (
                     <Grid item xs={12} md={6} lg={4} key={index}>
-                      <StyledCard>
+                      <Card >
                         <CardContent>
                           <ChartOne data={data} />
                         </CardContent>
-                      </StyledCard>
+                      </Card>
                     </Grid>
                   );
                 // case "किस विषय का अवलोकन किया गया?":
