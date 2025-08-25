@@ -31,7 +31,7 @@ const SidebarWrapper = styled("div")(({ isCollapsed }) => ({
   height: "100vh",
   display: "flex",
   transition: "width 0.3s ease",
-  width: isCollapsed ? "60px" : "210px",
+  width: isCollapsed ? "60px" : "230px",
   boxSizing: "border-box",
 }));
 
