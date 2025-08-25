@@ -37,6 +37,8 @@ const formalPalette = {
   cardBackground: "#FFFFFF",
   textPrimary: "#212121",
   textSecondary: "#757575",
+  textPrimaryLight: "#ffffffff",
+  textSecondaryLight: "#ffffffff",
   border: "#E0E0E0",
 };
 
@@ -78,13 +80,15 @@ const StyledCard = styled(Card)({
   // boxShadow: "none",    
   "&:hover": {
     transform: "translateY(-5px)",
-    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.21)",
     boxShadow: "none",    // ✅ No shadow
     transition: "transform 0.3s ease-in-out",
   },
   animation: `${fadeIn} 0.8s ease-out`,
   height: "100%",
   display: "flex",
+  marginTop: "10px",
+  marginBottom: "10px",
   flexDirection: "column",
 });
 
@@ -123,13 +127,13 @@ const IconWrapper = styled(Box)(({ theme, color }) => ({
 const StyledTypography = styled(Typography)({
   fontWeight: 600,
   fontSize: "1.8rem",
-  color: formalPalette.textPrimary,
+  color: formalPalette.textPrimaryLight,
 });
 
 const TitleTypography = styled(Typography)({
   fontWeight: 400,
   fontSize: "0.9rem",
-  color: formalPalette.textSecondary,
+  color: formalPalette.textSecondaryLight,
   textTransform: "uppercase",
   letterSpacing: "1px",
 });
@@ -205,8 +209,9 @@ const Dashboard = () => {
       title: "Total Schools",
       total: cardCount.totalSchool || 0,
       icon: totalSchoolicon,
-       background: "linear-gradient(135deg, #74ebd5 0%, #3498DB 100%)",
-      color: "linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%)",  
+      background: "linear-gradient(135deg, #74ebd5 0%, #3498DB 100%)",
+      color: "linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%)",
+      shade: "linear-gradient(135deg, #bafaffff 0%, #89a5e0ff 100%)"  
       
     },
     {
@@ -214,24 +219,27 @@ const Dashboard = () => {
       total: cardCount.totalCaC || 0,
       icon: totalCACicon,
       color: "linear-gradient(135deg, #FAD961 0%, #F76B1C 100%)", // Green
+      shade: "linear-gradient(135deg, #faefc9ff 0%, #f9c5a8ff 100%)",  
     },
     {
       title: "Total Survey",
       total: cardCount.totalSubmission || 0,
       icon: surveyicon,
       color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", // Purple
+      shade: "linear-gradient(135deg, #afbcf7ff 0%, #d8b1ffff 100%)"  
     },
     {
       title: "Total Visited School",
       total: cardCount.visitSchoolCount || 0,
       icon: visitedSchoolicon,
       color: "linear-gradient(135deg, #80e943ff 0%, #38f9d7 100%)", // Yellow
+      shade: "linear-gradient(135deg, #d7f7c5ff 0%, #9effedff 100%)" 
     },
   ];
 
-  const renderCard = (title, total, icon, color) => (
+  const renderCard = (title, total, icon, color,shade) => (
     <CustomCard color={color}>
-      <IconWrapper color={color}>
+      <IconWrapper color={shade}>
         <img src={icon} alt={`${title} icon`} />
       </IconWrapper>
       <Box>
@@ -248,11 +256,11 @@ const Dashboard = () => {
           <Header />
         </Grid>
         <Grid item xs={12}>
-          <StyledCard>
+          <Card sx={{ boxShadow: "none" }}>
             <CardContent>
               <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
             </CardContent>
-          </StyledCard>
+          </Card>
         </Grid>
         <Grid container spacing={2}  sx={{marginLeft:3,marginRight:2}}>
         {cardWidgets.map((card, index) => (
@@ -265,7 +273,7 @@ const Dashboard = () => {
             sx={{ animation: `${slideInLeft} 0.5s ease-out ${index * 0.1}s` }}
             // ml={2}
           >
-            {renderCard(card.title, card.total, card.icon, card.color)}
+            {renderCard(card.title, card.total, card.icon, card.color, card.shade)}
           </Grid>
         ))}
         </Grid>

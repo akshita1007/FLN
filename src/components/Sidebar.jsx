@@ -13,7 +13,7 @@ import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
 const formalPalette = {
-  background: "#1E293B", //2C3E50
+  background:"rgb(3, 3, 148)", //2C3E50  //"#1E293B"
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
@@ -152,7 +152,7 @@ const SIDEBAR_ITEMS = [
     id: "submission",
     title: "Submission",
     image: submission,
-    paths: ["/dashboard"],
+    paths: ["/submission"],
   },
   {
     id: "visit",
