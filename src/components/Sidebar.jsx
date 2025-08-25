@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { motion } from "framer-motion";
+import { motion, px } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { styled, keyframes } from "@mui/system";
 import Home from "../Assets/icons/home.png";
@@ -112,6 +112,7 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
   "&:hover": {
     color: formalPalette.textPrimary,
     background: formalPalette.hover,
+    border: "1px solid black",
   },
 
   "&:hover .icon-img": {

@@ -103,7 +103,7 @@ export default function PieChart(props) {
           value: item.value || 0,
           name: item.name,
           itemStyle: {
-            color: colorValues[index % colorValues.length].light,
+            color: colorValues[index % colorValues.length].main,
           },
         })),
         center: props.size=="small"?["80%", "60%"]: ["50%", "55%"],

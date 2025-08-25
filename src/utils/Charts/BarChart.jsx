@@ -88,7 +88,7 @@ export default function HalfDonutChart(props) {
           value: item.value || 0,
           name: item.name,
           itemStyle: {
-            color: colorValues[index % colorValues.length].light,
+            color: colorValues[index % colorValues.length].main,
           },
         })),
       },

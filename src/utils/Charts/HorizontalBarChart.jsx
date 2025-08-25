@@ -9,7 +9,7 @@ export default function HorizontalBarChart(props) {
 
   const chartContainerRef = useRef(null); 
   const [containerWidth, setContainerWidth] = useState(0);
-
+  
   const colors = props.colors || Colors;
   const colorValues = props.ColorSequence
     ? props.ColorSequence.map((key) => getColorByNumber(key))
