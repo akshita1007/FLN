@@ -20,7 +20,6 @@ const PrivateRoute = ({ children }) => {
         </div>
         </div>
     </MotionConfig>
-    <ToastContainer/>
 </> : <Navigate to="/login" />;
 };
 

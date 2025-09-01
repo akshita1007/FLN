@@ -32,6 +32,7 @@ const SidebarWrapper = styled("div")(({ isCollapsed }) => ({
   display: "flex",
   transition: "width 0.3s ease",
   width: isCollapsed ? "60px" : "230px",
+  zIndex: 1000,
   boxSizing: "border-box",
 }));
 
@@ -153,7 +154,7 @@ const SIDEBAR_ITEMS = [
     image: Analysis,
     paths: ["/analysis"],
   },
-  { id: "list", title: "CAC List", image: List, paths: ["/dashboard"] },
+  { id: "list", title: "CAC List", image: List, paths: ["/list"] },
   {
     id: "submission",
     title: "Submission",
@@ -164,7 +165,7 @@ const SIDEBAR_ITEMS = [
     id: "visit",
     title: "School Visit",
     image: visit,
-    paths: ["/dashboard"],
+    paths: ["/visit"],
   },
 ];
 
