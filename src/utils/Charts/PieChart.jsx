@@ -13,6 +13,7 @@ export default function PieChart(props) {
   const colorValues = props.ColorSequence
     ? props.ColorSequence.map((key) => getColorByNumber(key)).reverse()
     : Object.values(colors).reverse();
+  console.log("colorValues", colorValues);
 
   const pieChartOption = useMemo(() => ({
     animation: true,
@@ -22,15 +23,15 @@ export default function PieChart(props) {
       subtext: props.subtitle,
       left: "center",
       textVerticalAlign: "top",
-      top: "-6%",
-      textStyle: { color: "#333", fontSize: 18 },
+      top: "1%",
+      textStyle: { color: "#333", fontSize: 35 },
       subtextStyle: {
         show: true,
         textAlign: "center",
         width: `${containerWidth * 1.4}`,
         lineHeight: 20,
         overflow: "break",
-        fontSize:"10px",
+        fontSize:"18px",
         fontWeight:600
       },
       show: true,
@@ -103,7 +104,7 @@ export default function PieChart(props) {
           value: item.value || 0,
           name: item.name,
           itemStyle: {
-            color: colorValues[index % colorValues.length].light,
+            color: props.colors?colorValues[index % colorValues.length]: colorValues[index % colorValues.length].darker,
           },
         })),
         center: props.size=="small"?["80%", "60%"]: ["50%", "55%"],
@@ -184,7 +185,7 @@ export default function PieChart(props) {
           </Typography>
         </div>
       ) : (
-        <ReactECharts option={pieChartOption} style={{height:"250px"}} />
+        <ReactECharts option={pieChartOption} style={{height:"350px"}} />
       )}
     </div>
   );

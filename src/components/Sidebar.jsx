@@ -163,7 +163,7 @@ const SIDEBAR_ITEMS = [
     id: "visit",
     title: "School Visit",
     image: visit,
-    paths: ["/dashboard"],
+    paths: ["/visit"],
   },
 ];
 

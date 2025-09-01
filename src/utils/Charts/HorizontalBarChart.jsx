@@ -77,7 +77,7 @@ export default function HorizontalBarChart(props) {
           data: props.chartData.map((item, index) => ({
             value: item.value || 0,
             itemStyle: {
-              color: colorValues[index % colorValues.length].dark,
+              color: colorValues[index % colorValues.length].light,
               borderRadius: [5, 5, 0, 0],
             },
           })),
