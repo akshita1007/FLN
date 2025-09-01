@@ -328,6 +328,7 @@ import BarChart from "../Dashboard/BarChart";
 import PieChart from "../../utils/Charts/PieChart";
 import NoData from "../../utils/NoData/NoData";
 import Loader from "../../utils/Loader/Loader";
+import { color } from "framer-motion";
 
 // Static data lists
 const stepDataList = [
@@ -440,6 +441,7 @@ const AnalysisPage = () => {
       title: "",
       subtitle: data.questionText,
       chartData: data.chartData,
+      colors:['#2563eb','#38bdf8','#ea580c','#dc2626','#22c55e','#ffd166','#06d6a0','#118ab2'],
       loading: isLoading,
     };
 
@@ -465,7 +467,7 @@ const AnalysisPage = () => {
         />
       </Box>
 
-      <Box sx={{ width: "100%", px: "20px", mb: "15px" }}>
+      <Box sx={{ width: "97%", px: "20px", mb: "15px" }}>
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
@@ -484,8 +486,8 @@ const AnalysisPage = () => {
                 color: Colors.primary.Extra,
                 transition: "background 0.3s ease, box-shadow 0.3s ease",
                 "&.Mui-selected": {
-                  background: Colors.primary.light,
-                  color: Colors.primary.dark,
+                  background: Colors.primary.darker,
+                  color: Colors.primary.contrastText,
                 },
               }}
             />

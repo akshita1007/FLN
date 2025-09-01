@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext"
+import { useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import Toast from "../../utils/Toast/Toast";
 import Loader from "../../utils/Loader/Loader";
@@ -21,6 +22,7 @@ import DropDown from "./DropDown";
 import ChartOne from "../AllCharts/ChartOne";
 import ChartTwo from "../AllCharts/ChartTwo";
 import ChartThree from "../AllCharts/ChartThree";
+
 
 // Import icons
 import surveyicon from "../../Assets/icons/survey.png";
@@ -141,6 +143,7 @@ const TitleTypography = styled(Typography)({
 const Dashboard = () => {
   const { token } = useAuth();
   const [cardCount, setCardCount] = useState({});
+  const { districtId, blockId, clusterId } = useParams();
   const [countData, setCountData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({});
@@ -166,35 +169,40 @@ const Dashboard = () => {
         if (response.data.success) {
           setCardCount(response.data.data ? response.data.data : {});
         }
-      } catch (error) {
-        console.error(error);
+      if (response.data.success) {
+        setCardCount(response.data.data || {});
       }
-    };
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_URL}/v1/submit/report-analysis`,
-          {
-            params: { ...filter, step: "step1" },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (response?.data) {
-          Toast("success", "Data loaded successfully!");
-          setCountData(response.data?.data ? response.data?.data : []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_URL}/v1/submit/report-analysis`,
+        {
+          params: { ...filter, step: "step1" },
+          headers: { Authorization: `Bearer ${token}` },
         }
-      } catch (error) {
-        Toast("error", "Failed to load data. Please try again.");
-        console.error(error);
-        setCountData([]);
-      } finally {
-        setIsLoading(false);
+      );
+      if (response?.data) {
+        Toast("success", "Data loaded successfully!");
+        setCountData(response.data?.data || []);
       }
-    };
-    fetchCount();
-    fetchData();
-  }, [filter, token]);
+    } catch (error) {
+      Toast("error", "Failed to load data. Please try again.");
+      console.error(error);
+      setCountData([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchCount();
+  fetchData();
+}, [filter, token, districtId, blockId, clusterId]);
 
   const chartDataArray = useMemo(
     () =>
