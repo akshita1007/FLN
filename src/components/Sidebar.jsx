@@ -17,7 +17,8 @@ const formalPalette = {
   textPrimary: "#ECF0F1",
   textSecondary: "#BDC3C7",
   active: "#3498DB",
-  hover: "#2f7fa1",
+  // hover: "#2f7fa1ff",
+  hover: "rgba(47, 127, 161, 0.7)"
 };
 
 // Keyframe animations for a polished look

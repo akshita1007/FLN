@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid } from '@mui/material'
+import { Box, Card, CardContent, Grid } from '@mui/material'
 import React from 'react'
 import HorizontalBarChart from '../../utils/Charts/HorizontalBarChart'
 import { Colors } from '../../utils/Theme/Colors'
@@ -7,8 +7,7 @@ import DoughnutChart from '../../utils/Charts/DoughnutChart'
 const ChartOne = ({data}) => {
   console.log(data)
   return (
-    <Grid item xs={12} md={12} >
-                  <Card
+                  <Box
                     sx={{
                       backgroundColor:'#fff',
                       borderRadius: "8px",
@@ -16,7 +15,6 @@ const ChartOne = ({data}) => {
                     }}
                     elevation={0}
                   >
-                    <CardContent>
                         <HorizontalBarChart
                           title={""}
                           subtitle={data?.questionText}
@@ -25,10 +23,7 @@ const ChartOne = ({data}) => {
                           lable={"Data"}
                         />
                     
-                    </CardContent>
-                  </Card>
-                </Grid>
-  )
+                  </Box>)
 }
 
 export default ChartOne

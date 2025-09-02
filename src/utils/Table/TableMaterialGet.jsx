@@ -185,108 +185,6 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
     columns,
     data: dataTable,
     enableRowSelection: true,
-    enableRowNumbers: true,
-    enableGlobalFilter: true,
-    manualPagination: true,
-    enableFacetedValues: true,
-    rowNumberDisplayMode: 'static',
-    columnFilterDisplayMode: 'popover',
-    manualFiltering: true,
-    onColumnFiltersChange: setColumnFilters,
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
-    onGlobalFilterChange: setSearchQuery,
-    onColumnVisibilityChange: setColumnVisibility,
-    displayColumnDefOptions: {
-      'mrt-row-numbers': {
-        enableHiding: true,
-      },
-      'mrt-row-select': {
-        enableHiding: true,
-      },
-    },
-    rowCount,
-    state: {
-      isLoading,
-      pagination,
-      showAlertBanner: isError,
-      showProgressBars: isRefetching,
-      sorting,
-      globalSearch: searchQuery,
-      columnFilters,
-      columnVisibility
-    },
-    key: tableKey,
-    renderTopToolbarCustomActions: ({ table }) => {
-      const selectedRows = table.getSelectedRowModel().rows;
-      const hasData = table.getPrePaginationRowModel().rows.length > 0;
-      const visibleColumns = table
-        .getAllColumns()
-        .filter(col => col?.getIsVisible() && col?.id !== 'mrt-row-numbers' && col?.id !== 'mrt-row-select')
-        .map(col => col?.columnDef);
-      
-      const hasVisibleColumns = visibleColumns.length > 0;
-
-      return (
-        <>
-          {hasData ? (
-            <Box sx={{
-              display: 'flex',
-              gap: '16px',
-              padding: '4px 0px',
-              flexWrap: 'wrap',
-              alignItems: "center",
-            }}>
-              {dataTable.length > 0 && (
-                <>
-                  {hasVisibleColumns && <>
-                    <Tooltip title="Export To Excel">
-                      <img
-                        onClick={() =>
-                          handleExportRows(table.getPrePaginationRowModel().rows, visibleColumns, selectedRows)
-                        }
-                        src={img_excel}
-                        alt="excel-icon"
-                        style={{ height: "35px", width: "35px", cursor: "pointer" }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Export To PDF">
-                      <img
-                        onClick={() =>
-                          handleExportPDF(table.getPrePaginationRowModel().rows, visibleColumns, selectedRows)
-                        }
-                        src={img_pdf}
-                        alt="PDF-icon"
-                        style={{ height: "35px", width: "35px", cursor: "pointer" }}
-                      />
-                    </Tooltip>
-                  </>}
-                </>
-              )}
-              <Typography color={"darkblue"} sx={{ fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif;`, fontWeight: '600'}}>
-                {table_name}
-              </Typography>
-            </Box>
-          ):<>
-          <Box sx={{
-              display: 'flex',
-              gap: '16px',
-              padding: '4px 0px',
-              flexWrap: 'wrap',
-              alignItems: "center",
-            }}></Box>
-          </>}
-        </>
-      );
-    },
-    initialState: { pagination: { pageSize: 15, pageIndex: 0 } },
-    muiTableBodyCellProps: {
-      sx: {
-        padding: '6px 10px',
-        fontSize: '12px',
-        lineHeight: 1,
-      },
-    },
   });
 
   useEffect(() => {
@@ -294,18 +192,11 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
   }, [dataTable, table]);
 
   return (
-    <Box sx={{ overflow: 'auto' }}>
+    <Box sx={{ background:'#949494ff', padding:'1px' }}>
       <MaterialReactTable
         key={tableKey}
         table={table}
-        initialState={{
-          density: 'compact',
-        }}
-        muiTableHeadCellProps={{
-          sx: {
-            backgroundColor: '#f0f0f0',
-          },
-        }}
+
       />
     </Box>
   );
