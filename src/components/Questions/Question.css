@@ -1,0 +1,192 @@
+/* src/App.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #3f51b5; /* A deep blue for main elements */
+  --secondary-color: #00bcd4; /* A vibrant teal for accents */
+  --background-color: #f0f2f5; /* Light gray background */
+  --card-bg-color: #ffffff; /* White card background */
+  --text-color: #333333; /* Dark text for readability */
+  --light-text-color: #666666; /* Lighter text for subtitles */
+  --border-color: #e0e0e0; /* Light border color */
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.header {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  font-weight: 600;
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
+}
+
+.main-content {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.form-section {
+  flex: 2;
+  min-width: 300px;
+}
+
+.form-section h2{
+  margin-left: 29px;
+}
+
+.graph-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.card {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h3.question-title {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--light-text-color);
+  margin-bottom: 1rem;
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.multiselect-container {
+  flex-direction: column;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.option-label:hover {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(0, 188, 212, 0.3);
+}
+
+.option-label input[type="radio"],
+.option-label input[type="checkbox"] {
+  accent-color: var(--primary-color);
+}
+
+.option-label:has(input[type="radio"]:checked),
+.option-label:has(input[type="checkbox"]:checked) {
+  background-color: #e8eaf6; /* Light primary color */
+  border-color: var(--primary-color);
+}
+
+.input-field,
+.dropdown {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input-field:focus,
+.dropdown:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(0, 188, 212, 0.3);
+}
+
+.graph-card {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.graph-title {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.graph-container {
+  width: 100%;
+  height: 300px; /* Set a fixed height for the graph container */
+  margin-bottom: 1rem;
+}
+
+.graph-info {
+  font-size: 0.8rem;
+  color: var(--light-text-color);
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-section,
+  .graph-section {
+    width: 100%;
+  }
+
+  .option-label {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}

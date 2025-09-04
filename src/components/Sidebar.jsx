@@ -156,11 +156,17 @@ const SIDEBAR_ITEMS = [
     paths: ["/analysis"],
   },
   { id: "list", title: "CAC List", image: List, paths: ["/list"] },
+  // {
+  //   id: "submission",
+  //   title: "Submission",
+  //   image: submission,
+  //   paths: ["/submission"],
+  // },
   {
-    id: "submission",
-    title: "Submission",
+    id: "question",
+    title: "Questionnaire",
     image: submission,
-    paths: ["/submission"],
+    paths: ["/questionnaire"],
   },
   {
     id: "visit",

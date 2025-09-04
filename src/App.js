@@ -13,7 +13,7 @@ import CacListPage from "./components/CacList/CacListPage";
 import AnalysisPage from "./components/Analysis/AnalysisPage";
 import Submission from "./components/Submission/Submission";
 import SchoolVisit from "./components/SchoolVisit/SchoolVisit";
-
+import Question from "./components/Questions/Question";
 
 function Logout() {
   const { logout } = useAuth();
@@ -69,6 +69,14 @@ function App() {
             element={
               <PrivateRoute>
                 <SchoolVisit />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/questionnaire"
+            element={
+              <PrivateRoute>
+                <Question />
               </PrivateRoute>
             }
           ></Route>

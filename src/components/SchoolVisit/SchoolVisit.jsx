@@ -97,8 +97,8 @@ const SchoolVisit = () => {
       {/* Header */}
       <Grid item xs={12} sx={{ marginBottom: "30px" }}>
         <Header />
-      </Grid>
-
+        
+        </Grid>
       {/* Dropdown Filter */}
       <Grid item xs={12} sx={{ marginBottom: "25px", padding: "0 20px" }}>
         <DropDown filterData={onFilterUpdate} filter={filter} />
