@@ -169,40 +169,40 @@ const Dashboard = () => {
         if (response.data.success) {
           setCardCount(response.data.data ? response.data.data : {});
         }
-      if (response.data.success) {
-        setCardCount(response.data.data || {});
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_URL}/v1/submit/report-analysis`,
-        {
-          params: { ...filter, step: "step1" },
-          headers: { Authorization: `Bearer ${token}` },
+        if (response.data.success) {
+          setCardCount(response.data.data || {});
         }
-      );
-      if (response?.data) {
-        Toast("success", "Data loaded successfully!");
-        setCountData(response.data?.data || []);
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      Toast("error", "Failed to load data. Please try again.");
-      console.error(error);
-      setCountData([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
-  fetchCount();
-  fetchData();
-}, [filter, token, districtId, blockId, clusterId]);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_URL}/v1/submit/report-analysis`,
+          {
+            params: { ...filter, step: "step1" },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (response?.data) {
+          Toast("success", "Data loaded successfully!");
+          setCountData(response.data?.data || []);
+        }
+      } catch (error) {
+        Toast("error", "Failed to load data. Please try again.");
+        console.error(error);
+        setCountData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCount();
+    fetchData();
+  }, [filter, token, districtId, blockId, clusterId]);
 
   const chartDataArray = useMemo(
     () =>
@@ -263,19 +263,51 @@ const Dashboard = () => {
   );
 
   return (
-    <Grid container>
+    <Container maxWidth="auto" className="analysis-page" sx={{ padding: { xs: 0 } }}>
+              <Header title={"Dashboard"}/>
+
+              <Box sx={{ p: "20px", mb: "25px" }}>
+                <Card sx={{ boxShadow: "none" }}>
+                  <CardContent>
+                    {/* <DropDown
+                      filterData={onFilterUpdate}
+                      stepDataList={stepDataList}
+                      filter={filter}
+                    /> */}
+                    <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
+                  </CardContent>
+                </Card>
+              </Box>
+    {/* // <Grid container>
+    //     <Grid item xs={12}>
+    //       <Header />
+    //     </Grid>
+    //     <Grid item xs={12}>
+    //       <Box sx={{ p: "20px", mb: "25px" }}>
+    //         <Card sx={{ boxShadow: "none" }}>
+    //           <CardContent>
+    //             <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
+    //           </CardContent>
+    //         </Card>
+    //       </Box>
+    //     </Grid> */}
+
       <Grid container spacing={4} sx={{ marginBottom: 4 }}>
-        <Grid item xs={12}>
-          <Header />
-        </Grid>
-        <Grid item xs={12}>
-          <Card sx={{ boxShadow: "none" }}>
-            <CardContent>
-              <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid container spacing={2} sx={{ marginLeft: 3, marginRight: 2 }}>
+        {/* <Container maxWidth="auto" className="analysis-page" sx={{ bgcolor: Colors.bg.bg1, padding: { xs: 0 } }}>
+              <Header />
+        
+              <Box sx={{ p: "20px", mb: "25px" }}>
+                <Card sx={{ boxShadow: "none" }}>
+                  <CardContent>
+                    <DropDown
+                      filterData={onFilterUpdate}
+                      stepDataList={stepDataList}
+                      filter={filter}
+                    />
+                  </CardContent>
+                </Card>
+              </Box> */}
+        <Grid container spacing={2} sx={{ marginLeft: 5, marginRight: 2 }}>
           {cardWidgets.map((card, index) => (
             <Grid
               item
@@ -292,7 +324,7 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      <Divider sx={{ my: 4, borderColor: formalPalette.border }} />
+      <Divider sx={{ borderColor: formalPalette.border }} />
 
       {isLoading ? (
         <Box
@@ -301,6 +333,8 @@ const Dashboard = () => {
             justifyContent: "center",
             alignItems: "center",
             minHeight: "400px",
+            p: "20px",
+            mb: "25px"
           }}
         >
           <Loader msg={"Fetching Data... Please Wait"} size={50} />
@@ -313,11 +347,13 @@ const Dashboard = () => {
                 case "किस कक्षा का अवलोकन किया गया?":
                   return (
                     <Grid item xs={12} md={6} lg={4} key={index}>
-                      <Card >
-                        <CardContent>
-                          <ChartOne data={data} />
-                        </CardContent>
-                      </Card>
+                      <Box sx={{ p: "20px", mb: "25px" }}>
+                        <Card >
+                          <CardContent>
+                            <ChartOne data={data} />
+                          </CardContent>
+                        </Card>
+                      </Box>
                     </Grid>
                   );
                 // case "किस विषय का अवलोकन किया गया?":
@@ -352,7 +388,7 @@ const Dashboard = () => {
           )}
         </Grid>
       )}
-    </Grid>
+    </Container>
   );
 };
 export default Dashboard;

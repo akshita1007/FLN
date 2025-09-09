@@ -1,27 +1,34 @@
-
 import React, { useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import "./Question.css";
 import Header from "../Header/Header";
-import { Container } from "@mui/material";
+import { Container, Grid2 } from "@mui/material";
 import { Colors } from "../../utils/Theme/Colors";
+import { Grid } from "antd";
 
 const Question = () => {
-  const [step, setStep] = useState("step1"); // Step dropdown
-  const [subjectCode, setSubjectCode] = useState("1"); // Subject dropdown
+  const [step, setStep] = useState("step1");
+  const [subjectCode, setSubjectCode] = useState("1");
   const [data, setData] = useState(null);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Fetch API whenever step or subjectCode changes
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       try {
-        let url =
-          step === "step1"
-            ? "http://localhost:4000/api/v1/question/step1"
-            : `http://localhost:4000/api/v1/question/step2?subjectCode=${subjectCode}`;
+        let url;
+        if (step === "step1") {
+          url = "http://localhost:4000/api/v1/question/step1";
+        } else if (step === "step2") {
+          url = `http://localhost:4000/api/v1/question/step2?subjectCode=${subjectCode}`;
+        } else if (step === "step3" && subjectCode === "1") {
+          url = "http://localhost:4000/api/v1/question/step3/filter-hindi-data";
+        } else if (step === "step3" && subjectCode === "2") {
+          url = "http://localhost:4000/api/v1/question/step3/filter-math-data";
+        } else {
+          url = "http://localhost:4000/api/v1/question/step4/filter-hindi-data";
+        }
 
         const response = await fetch(url, {
           method: "GET",
@@ -37,10 +44,21 @@ const Question = () => {
 
         const json = await response.json();
         console.log(`Fetched ${step} (subject ${subjectCode}) data:`, json);
-        setData(json.data);
-        setFormData(json.data);
+
+        // Normalize the response data
+        let normalizedData;
+        if (Array.isArray(json.data)) {
+          normalizedData = json.data;
+        } else {
+          normalizedData = [json.data];
+        }
+
+        setData(normalizedData);
+        setFormData(normalizedData);
       } catch (err) {
         console.error("Error fetching data:", err);
+        setData(null);
+        setFormData(null);
       } finally {
         setLoading(false);
       }
@@ -58,7 +76,7 @@ const Question = () => {
     );
   }
 
-  if (!data) {
+  if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-100">
         <p className="text-xl text-gray-600">
@@ -68,10 +86,11 @@ const Question = () => {
     );
   }
 
-  // ✅ Handlers
-  const handleOptionChange = (questionId, optionId) => {
+  const handleOptionChange = (parentIndex, questionId, optionId) => {
     setFormData((prevData) => {
-      const updatedQuestions = prevData.questions.map((q) => {
+      const updatedData = [...prevData];
+      const parent = updatedData[parentIndex];
+      const updatedQuestions = parent.questions.map((q) => {
         if (q.id === questionId) {
           const updatedOptions = q.option.map((opt) => ({
             ...opt,
@@ -81,13 +100,16 @@ const Question = () => {
         }
         return q;
       });
-      return { ...prevData, questions: updatedQuestions };
+      updatedData[parentIndex] = { ...parent, questions: updatedQuestions };
+      return updatedData;
     });
   };
 
-  const handleMultiOptionChange = (questionId, optionId) => {
+  const handleMultiOptionChange = (parentIndex, questionId, optionId) => {
     setFormData((prevData) => {
-      const updatedQuestions = prevData.questions.map((q) => {
+      const updatedData = [...prevData];
+      const parent = updatedData[parentIndex];
+      const updatedQuestions = parent.questions.map((q) => {
         if (q.id === questionId) {
           const updatedOptions = q.option.map((opt) =>
             opt.id === optionId ? { ...opt, isChecked: !opt.isChecked } : opt
@@ -100,51 +122,24 @@ const Question = () => {
         }
         return q;
       });
-      return { ...prevData, questions: updatedQuestions };
+      updatedData[parentIndex] = { ...parent, questions: updatedQuestions };
+      return updatedData;
     });
   };
 
-  const handleInputChange = (questionId, value) => {
+  const handleInputChange = (parentIndex, questionId, value) => {
     setFormData((prevData) => {
-      const updatedQuestions = prevData.questions.map((q) => {
+      const updatedData = [...prevData];
+      const parent = updatedData[parentIndex];
+      const updatedQuestions = parent.questions.map((q) => {
         if (q.id === questionId) {
           return { ...q, answer: value };
         }
         return q;
       });
-      return { ...prevData, questions: updatedQuestions };
+      updatedData[parentIndex] = { ...parent, questions: updatedQuestions };
+      return updatedData;
     });
-  };
-
-  // ✅ Attendance Graph (Step 2 has D/E)
-  const enrolled =
-    parseInt(formData?.questions.find((q) => q.id === "D")?.answer) || 0;
-  const present =
-    parseInt(formData?.questions.find((q) => q.id === "E")?.answer) || 0;
-  const absent = Math.max(enrolled - present, 0);
-
-  const eChartsOptions = {
-    title: {
-      text: "Student Attendance Report",
-      left: "center",
-      textStyle: { color: "#3f51b5" },
-    },
-    tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-    xAxis: { type: "category", data: ["Enrolled", "Present", "Absent"] },
-    yAxis: { type: "value" },
-    series: [
-      {
-        name: "Student Count",
-        type: "bar",
-        data: [
-          { value: enrolled, itemStyle: { color: "#4bc0c0" } },
-          { value: present, itemStyle: { color: "#36a2eb" } },
-          { value: absent, itemStyle: { color: "#ff6384" } },
-        ],
-        barWidth: "60%",
-        label: { show: true, position: "top", color: "#333" },
-      },
-    ],
   };
 
   return (
@@ -153,12 +148,10 @@ const Question = () => {
       className="analysis-page"
       sx={{ bgcolor: Colors.bg.bg1, overflowX: "hidden", padding: { xs: 0 } }}
     >
-      <Header />
+      <Header title={"Questionnaire"}/>
       <div className="container">
         <header className="header">
-          <h1>{formData.title}</h1>
-
-          {/* ✅ Step selector dropdown */}
+          <h1>{data[0]?.title || "Questionnaire"}</h1>
           <select
             value={step}
             onChange={(e) => setStep(e.target.value)}
@@ -167,18 +160,19 @@ const Question = () => {
           >
             <option value="step1">Step 1</option>
             <option value="step2">Step 2</option>
+            <option value="step3">Step 3</option>
+            <option value="step4">Step 4</option>
           </select>
 
-          {/* ✅ Subject selector (only for step2) */}
-          {step === "step2" && (
+          {(step === "step2" || step === "step3") && (
             <select
               value={subjectCode}
               onChange={(e) => setSubjectCode(e.target.value)}
               className="dropdown"
               style={{ marginTop: "10px" }}
             >
-              <option value="1">Subject Code 1</option>
-              <option value="2">Subject Code 2</option>
+              <option value="1">Hindi</option>
+              <option value="2">Maths</option>
             </select>
           )}
         </header>
@@ -186,88 +180,115 @@ const Question = () => {
         <main className="main-content">
           <section className="form-section">
             <h2>प्रश्नों का अवलोकन</h2>
-
-            {formData.questions.map((question) => (
-              <div className="card" key={question.id}>
-                <h3 className="question-title">{question.questionText}</h3>
-                {question.subtitle && (
-                  <p className="subtitle">{question.subtitle}</p>
+            {formData?.map((parent, parentIndex) => (
+              <div key={parent.title} className="parent-section-container">
+                {formData.length > 1 && (
+                  <h3 className="parent-title">{parent.title}</h3>
                 )}
+                {parent?.questions?.map((question) => (
+                  <div className="card" key={question.id}>
+                    <h4 className="question-title">{question.questionText}</h4>
+                    {question.subtitle && (
+                      <p className="subtitle">{question.subtitle}</p>
+                    )}
 
-                <div className="options-container">
-                  {question.type === "multiselect" &&
-                    question.option.map((opt) => (
-                      <label key={opt.id} className="option-label">
+                    <div className="options-container">
+                      {question.type === "multiselect" &&
+                        question?.option?.map((opt) => (
+                          <label key={opt.id} className="option-label">
+                            <input
+                              type="checkbox"
+                              checked={opt.isChecked}
+                              onChange={() =>
+                                handleMultiOptionChange(parentIndex, question.id, opt.id)
+                              }
+                            />
+                            {opt.text}
+                          </label>
+                        ))}
+
+                      {question.type === "option" &&
+                        question?.option?.map((opt) => (
+                          <label key={opt.id} className="option-label">
+                            <input
+                              type="radio"
+                              name={`${parentIndex}-${question.id}`}
+                              checked={opt.isChecked}
+                              onChange={() =>
+                                handleOptionChange(parentIndex, question.id, opt.id)
+                              }
+                            />
+                            {opt.text}
+                          </label>
+                        ))}
+
+                      {question.type === "dropdown" && (
+                        <select
+                          className="dropdown"
+                          value={question.answer || ""}
+                          onChange={(e) =>
+                            handleInputChange(parentIndex, question.id, e.target.value)
+                          }
+                        >
+                          <option value="">Select</option>
+                          {question?.option?.map((opt) => (
+                            <option key={opt.id} value={opt.text}>
+                              {opt.text}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+
+                      {question.type === "input" && (
                         <input
-                          type="checkbox"
-                          checked={opt.isChecked}
-                          onChange={() =>
-                            handleMultiOptionChange(question.id, opt.id)
+                          type={question.typeOfInput || "text"}
+                          className="input-field"
+                          placeholder="Enter answer"
+                          value={question.answer || ""}
+                          onChange={(e) =>
+                            handleInputChange(parentIndex, question.id, e.target.value)
                           }
                         />
-                        {opt.text}
-                      </label>
-                    ))}
-
-                  {question.type === "option" &&
-                    question.option.map((opt) => (
-                      <label key={opt.id} className="option-label">
-                        <input
-                          type="radio"
-                          name={question.id}
-                          checked={opt.isChecked}
-                          onChange={() =>
-                            handleOptionChange(question.id, opt.id)
-                          }
-                        />
-                        {opt.text}
-                      </label>
-                    ))}
-
-                  {question.type === "dropdown" && (
-                    <select
-                      className="dropdown"
-                      value={question.answer || ""}
-                      onChange={(e) =>
-                        handleInputChange(question.id, e.target.value)
-                      }
-                    >
-                      <option value="">Select</option>
-                      {question.option.map((opt) => (
-                        <option key={opt.id} value={opt.text}>
-                          {opt.text}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-
-                  {question.type === "input" && (
-                    <input
-                      type={question.typeOfInput || "text"}
-                      className="input-field"
-                      placeholder="Enter answer"
-                      value={question.answer || ""}
-                      onChange={(e) =>
-                        handleInputChange(question.id, e.target.value)
-                      }
-                    />
-                  )}
-                </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </section>
 
-          {/* ✅ Attendance Graph (only if step2) */}
-          {step === "step2" && (
+          {/* {step === "step2" && (
             <aside className="graph-section">
               <div className="graph-card">
                 <ReactECharts
-                  option={eChartsOptions}
+                  option={{
+                    title: {
+                      text: "Student Attendance Report",
+                      left: "center",
+                      textStyle: { color: "#3f51b5" },
+                    },
+                    tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+                    xAxis: { type: "category", data: ["Enrolled", "Present", "Absent"] },
+                    yAxis: { type: "value" },
+                    series: [
+                      {
+                        name: "Student Count",
+                        type: "bar",
+                        data: [
+                          { value: 0, itemStyle: { color: "#4bc0c0" } }, // Replace with actual values
+                          { value: 0, itemStyle: { color: "#36a2eb" } }, // Replace with actual values
+                          { value: 0, itemStyle: { color: "#ff6384" } }, // Replace with actual values
+                        ],
+                        barWidth: "60%",
+                        label: { show: true, position: "top", color: "#333" },
+                      },
+                    ],
+                  }}
                   style={{ height: "350px" }}
                 />
               </div>
             </aside>
-          )}
+          )} */}
         </main>
       </div>
     </Container>

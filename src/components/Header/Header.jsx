@@ -20,7 +20,7 @@ const headerPalette = {
   textPrimary: "#F0F2F5", // Lighter text color for contrast
 };
 
-const Header = () => {
+const Header = (props) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -32,6 +32,7 @@ const Header = () => {
   };
 
   return (
+    <>
     <Grid
       item
       xs={12}
@@ -39,7 +40,7 @@ const Header = () => {
         display: "flex",
         backgroundColor: "#FFFFFF",
         padding: "9px",
-        borderRadius: "8px",
+        // borderRadius: "8px",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
       }}
     >
@@ -186,6 +187,23 @@ const Header = () => {
         </Menu>
       </Grid>
     </Grid>
+    <Grid
+      item
+      xs={12}
+      sx={{
+        display: "flex",
+        backgroundColor: "#FFFFFF",
+        padding: "9px",
+        // borderRadius: "8px",
+        marginTop: "5px",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+      }}
+    >
+      <Box>
+        <Typography sx={{ marginLeft: "10px", marginTop: "6px" }} variant="h6">{props.title}</Typography>
+      </Box>
+    </Grid>
+    </>
   );
 };
 

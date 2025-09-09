@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, CircularProgress, Card, CardContent } from "@mui/material";
-import {MaterialReactTable} from "material-react-table";
+import { Container, Grid, CircularProgress, Card, CardContent, Box } from "@mui/material";
+import { MaterialReactTable } from "material-react-table";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import Header from "../Header/Header";
@@ -9,7 +9,7 @@ import { Colors } from "../../utils/Theme/Colors";
 import { Typography } from "antd";
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import "./SchoolVisit.css";
-import  { ShimmerCard } from "react-shimmer-effects";
+import { ShimmerCard } from "react-shimmer-effects";
 import Loader from "../../utils/Loader/Loader";
 
 const SchoolVisit = () => {
@@ -95,15 +95,21 @@ const SchoolVisit = () => {
       sx={{ bgcolor: Colors.bg.bg1, overflowX: "hidden", padding: { xs: 0 } }}
     >
       {/* Header */}
-      <Grid item xs={12} sx={{ marginBottom: "30px" }}>
-        <Header />
-        
-        </Grid>
+        <Header title={"Visit List"} />
+
       {/* Dropdown Filter */}
-      <Grid item xs={12} sx={{ marginBottom: "25px", padding: "0 20px" }}>
+      {/* <Grid item xs={12} sx={{ marginBottom: "25px", padding: "0 20px" }}>
         <DropDown filterData={onFilterUpdate} filter={filter} />
-      </Grid>
-      
+      </Grid> */}
+
+      <Box sx={{ p: "20px", mb: "25px" }}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent>
+            <DropDown filterData={onFilterUpdate} filter={filter} />
+          </CardContent>
+        </Card>
+      </Box>
+
       <Grid container spacing={2} sx={{ marginBottom: "25px", padding: "0 20px" }}>
       {/* District Level Card */}
       <Grid item xs={12} sm={4}>

@@ -27,8 +27,9 @@ const DropDown= React.forwardRef(({
   stepDataList,
   isSchool = false,
   isDate = false,
-  filter
-},ref) =>{
+  filter,
+  reportCategory
+}, ref) => {
   const [selectDistrict, setSelectDistrict] = useState("");
   const [selectBlock, setSelectBlock] = useState("");
   const [selectBlockList, setSelectBlockList] = useState([]);
@@ -40,6 +41,9 @@ const DropDown= React.forwardRef(({
   const { token } = useAuth();
   const [selectStep, setSelectStep] = useState(
     stepDataList ? stepDataList[0]?.step_key : ""
+  );
+  const [selectCategory, setSelectCategory] = useState(
+    reportCategory ? reportCategory[0]?.category_key : ""
   );
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [selectSchool, setSelectSchool] = useState("");
@@ -200,10 +204,10 @@ const DropDown= React.forwardRef(({
   const handleSchoolChange = (event, newValue) => {
     // console.log(newValue)
     const filterObj = {};
-    if (stepDataList ) filterObj.step = filter.step;
+    if (stepDataList) filterObj.step = filter.step;
     filterObj.districtId = filter.districtId;
     filterObj.blockId = filter.blockId;
-    filterObj.clusterId=filter.clusterId;
+    filterObj.clusterId = filter.clusterId;
     filterObj.schoolName = newValue;
     if (filterData) filterData(filterObj);
     // setSelectSchool(newValue);
@@ -211,9 +215,25 @@ const DropDown= React.forwardRef(({
   };
 
   const handleStepChange = (step) => {
-    console.log("hghjkhjkhjhjhjkh",step)
     const filterObj = {};
-    if (stepDataList ) filterObj.step = step;
+    if (stepDataList) filterObj.step = step;
+    if (filterData) filterData(filterObj);
+
+    // filterObj.districtId = dist;
+    // setSelectStep(step);
+    // setSelectDistrict("");
+    // setSelectBlock("");
+    // setSelectCluster("");
+    setSelectClusterList([]);
+    setSelectBlockList([]);
+    // setSelectSchool("");
+    setSelectSchoolList([]);
+    // setSelectedDates(null);
+  };
+
+  const handleCategoryChange = (category) => {
+    const filterObj = {};
+    if (reportCategory) filterObj.category = category;
     if (filterData) filterData(filterObj);
     
     // filterObj.districtId = dist;
@@ -277,6 +297,26 @@ const DropDown= React.forwardRef(({
   return (
     <>
       <Grid container spacing={1}>
+        {reportCategory && (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={2}
+          >
+            <DropdownComp
+              value={filter?.category}
+              multiMenu={reportCategory}
+              id={"step-drop"}
+              getSelected={(category) => handleCategoryChange(category)}
+              label={"Select Category"}
+              id_variable="category_key"
+              name_variable="category_value"
+              menu_first="none"
+            />
+          </Grid>
+        )}
         {stepDataList && (
           <Grid
             item
@@ -341,8 +381,8 @@ const DropDown= React.forwardRef(({
           }
         >
           <DropdownComp
-            value={filter?.blockId  || ""}
-            multiMenu={filter?.districtId ? selectBlockList:[]}
+            value={filter?.blockId || ""}
+            multiMenu={filter?.districtId ? selectBlockList : []}
             id={"block-drop"}
             getSelected={(block) => handleChangeBlock(block)}
             label={"Select Block"}

@@ -336,6 +336,11 @@ const stepDataList = [
   { step_key: "step3", step_value: "एफएलएन शिक्षण प्रक्रिया" },
 ];
 
+const reportCategory = [
+  { category_key: "1", category_value: "Data List" },
+  { category_key: "2", category_value: "Questions Based Analysis" },
+];
+
 const subjectCodeList = [
   { subjectCode: "1", subjectCodeValue: "HINDI" },
   { subjectCode: "2", subjectCodeValue: "MATHS" },
@@ -362,6 +367,7 @@ const AnalysisPage = () => {
   const [filter, setFilter] = useState({
     step: stepDataList[0]?.step_key,
     subjectCode: subjectCodeList[0]?.subjectCode,
+    category: reportCategory[0]?.category_key,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [countData, setCountData] = useState([]);
@@ -441,7 +447,7 @@ const AnalysisPage = () => {
       title: "",
       subtitle: data.questionText,
       chartData: data.chartData,
-      colors:['#2563eb','#38bdf8','#ea580c','#dc2626','#22c55e','#ffd166','#06d6a0','#118ab2'],
+      colors: ['#2563eb', '#38bdf8', '#ea580c', '#dc2626', '#22c55e', '#ffd166', '#06d6a0', '#118ab2'],
       loading: isLoading,
     };
 
@@ -457,17 +463,22 @@ const AnalysisPage = () => {
 
   return (
     <Container maxWidth="auto" className="analysis-page" sx={{ bgcolor: Colors.bg.bg1, padding: { xs: 0 } }}>
-      <Header />
+      <Header title={"Analysis Report"}/>
 
-      <Box sx={{ p: "20px", mb: "25px" }}>
-        <DropDown
-          filterData={onFilterUpdate}
-          stepDataList={stepDataList}
-          filter={filter}
-        />
+      <Box>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardContent>
+            <DropDown
+              filterData={onFilterUpdate}
+              stepDataList={stepDataList}
+              reportCategory={reportCategory}
+              filter={filter}
+            />
+          </CardContent>
+        </Card>
       </Box>
 
-      <Box sx={{ width: "97%", px: "20px", mb: "15px" }}>
+      <Box sx={{ width: "97%", px: "20px" }}>
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}

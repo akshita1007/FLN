@@ -18,16 +18,16 @@ const CacListPage = () => {
     <>
       <Grid container>
           <Grid item xs={12}>
-            <Header />
+            <Header title={"CAC LIST"}/>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginTop: "20px", padding: " 0 20px" }}>
             <Card sx={{ boxShadow: "none" }}>
               <CardContent>
                 <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginTop: "20px", padding: " 0 20px"}}>
             <Card sx={{ boxShadow: "none" }}>
               <CardContent>
                 <TableMaterialGet
