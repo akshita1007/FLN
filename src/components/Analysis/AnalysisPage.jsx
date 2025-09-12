@@ -332,13 +332,10 @@ import { color } from "framer-motion";
 
 // Static data lists
 const stepDataList = [
-  { step_key: "step2", step_value: "एफएलएन शिक्षण खंड" },
-  { step_key: "step3", step_value: "एफएलएन शिक्षण प्रक्रिया" },
-];
-
-const reportCategory = [
-  { category_key: "1", category_value: "Data List" },
-  { category_key: "2", category_value: "Questions Based Analysis" },
+  { step_key: "step1", step_value: "Step 1" },
+  { step_key: "step2", step_value: "Step 2" },
+  { step_key: "step3", step_value: "Step 3" },
+  { step_key: "step4", step_value: "Step 4" },
 ];
 
 const subjectCodeList = [
@@ -367,20 +364,27 @@ const AnalysisPage = () => {
   const [filter, setFilter] = useState({
     step: stepDataList[0]?.step_key,
     subjectCode: subjectCodeList[0]?.subjectCode,
-    category: reportCategory[0]?.category_key,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [countData, setCountData] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [questionList, setQuestionList] = useState([]);
+  const [selectedStep, setSelectedStep] = useState(stepDataList[0]?.step_key);
 
   // Memoized function for fetching data
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
+      let params = { step: filter.step };
+
+      if (filter.step !== "step1") {
+        params.subjectCode = filter.subjectCode;
+      }
+
       const response = await axios.get(
         `${process.env.REACT_APP_URL}/v1/submit/report-analysis/`,
         {
-          params: { ...filter },
+          params: params,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -400,6 +404,19 @@ const AnalysisPage = () => {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    if (countData && countData.length > 0) {
+      const formattedQuestions = countData.map((item, index) => ({
+        questionId: item.questionText, // A unique key for each question
+        questionText: item.questionText,
+      }));
+      setQuestionList(formattedQuestions);
+      console.log("formattedQuestions", formattedQuestions);
+    } else {
+      setQuestionList([]);
+    }
+  }, [countData]);
+
   // Handle tab change and update filter
   const handleTabChange = useCallback(
     (event, newValue) => {
@@ -416,6 +433,16 @@ const AnalysisPage = () => {
   const onFilterUpdate = useCallback((newFilter) => {
     setFilter((prevFilter) => ({ ...prevFilter, ...newFilter }));
   }, []);
+
+  const handleDataFromChild = useCallback((data) => {
+    setSelectedStep(data);
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      step: data,
+      // If the selected step is not 2 or 3, remove the subjectCode
+      ...(data === "step2" || data === "step3" || data === "step4" ? { subjectCode: subjectCodeList[selectedTab].subjectCode } : { subjectCode: undefined })
+    }));
+  }, [selectedTab]);
 
   // Memoize the processed chart data to avoid re-computation
   const chartDataArray = useMemo(() => {
@@ -463,7 +490,7 @@ const AnalysisPage = () => {
 
   return (
     <Container maxWidth="auto" className="analysis-page" sx={{ bgcolor: Colors.bg.bg1, padding: { xs: 0 } }}>
-      <Header title={"Analysis Report"}/>
+      <Header title={"Analysis Report"} />
 
       <Box>
         <Card sx={{ boxShadow: "none" }}>
@@ -471,40 +498,45 @@ const AnalysisPage = () => {
             <DropDown
               filterData={onFilterUpdate}
               stepDataList={stepDataList}
-              reportCategory={reportCategory}
               filter={filter}
+              selected={selectedStep}
+              sendData={handleDataFromChild}
+              questionDataList={questionList}
             />
           </CardContent>
         </Card>
       </Box>
-
-      <Box sx={{ width: "97%", px: "20px" }}>
-        <Tabs
-          value={selectedTab}
-          onChange={handleTabChange}
-          variant="fullWidth"
-          indicatorColor="primary"
-          textColor="inherit"
-          aria-label="subject tabs"
-        >
-          {subjectCodeList.map((item) => (
-            <Tab
-              key={item.subjectCode}
-              label={item.subjectCodeValue}
-              sx={{
-                fontWeight: "bold",
-                background: Colors.primary.dark,
-                color: Colors.primary.Extra,
-                transition: "background 0.3s ease, box-shadow 0.3s ease",
-                "&.Mui-selected": {
-                  background: Colors.primary.darker,
-                  color: Colors.primary.contrastText,
-                },
-              }}
-            />
-          ))}
-        </Tabs>
-      </Box>
+      {(selectedStep === "step2" || selectedStep === "step3" || selectedStep === "step4") && (
+        <>
+          <Box sx={{ width: "97%", px: "20px" }}>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              variant="fullWidth"
+              indicatorColor="primary"
+              textColor="inherit"
+              aria-label="subject tabs"
+            >
+              {subjectCodeList.map((item) => (
+                <Tab
+                  key={item.subjectCode}
+                  label={item.subjectCodeValue}
+                  sx={{
+                    fontWeight: "bold",
+                    background: Colors.primary.dark,
+                    color: Colors.primary.Extra,
+                    transition: "background 0.3s ease, box-shadow 0.3s ease",
+                    "&.Mui-selected": {
+                      background: Colors.primary.darker,
+                      color: Colors.primary.contrastText,
+                    },
+                  }}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        </>
+      )}
 
       {isLoading ? (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "200px" }}>

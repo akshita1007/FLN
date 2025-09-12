@@ -19,6 +19,7 @@ import Restart from "../../Assets/icons/rotate.png";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import "./Dropdown.css";
+import Question from "../Questions/Question";
 
 const { RangePicker } = DatePicker;
 
@@ -28,7 +29,10 @@ const DropDown= React.forwardRef(({
   isSchool = false,
   isDate = false,
   filter,
-  reportCategory
+  reportCategory,
+  questionDataList,
+  sendData,
+  selected
 }, ref) => {
   const [selectDistrict, setSelectDistrict] = useState("");
   const [selectBlock, setSelectBlock] = useState("");
@@ -44,6 +48,9 @@ const DropDown= React.forwardRef(({
   );
   const [selectCategory, setSelectCategory] = useState(
     reportCategory ? reportCategory[0]?.category_key : ""
+  );
+  const [selectQuestions, setSelectQuestins] = useState(
+    questionDataList ? questionDataList[0]?.question_key : ""
   );
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [selectSchool, setSelectSchool] = useState("");
@@ -215,15 +222,15 @@ const DropDown= React.forwardRef(({
   };
 
   const handleStepChange = (step) => {
+    console.log("step",step)
+    sendData(step)
     const filterObj = {};
     if (stepDataList) filterObj.step = step;
     if (filterData) filterData(filterObj);
 
-    // filterObj.districtId = dist;
-    // setSelectStep(step);
-    // setSelectDistrict("");
-    // setSelectBlock("");
-    // setSelectCluster("");
+    setSelectDistrict("");
+    setSelectBlock("");
+    setSelectCluster("");
     setSelectClusterList([]);
     setSelectBlockList([]);
     // setSelectSchool("");
@@ -232,6 +239,7 @@ const DropDown= React.forwardRef(({
   };
 
   const handleCategoryChange = (category) => {
+    sendData(category)
     const filterObj = {};
     if (reportCategory) filterObj.category = category;
     if (filterData) filterData(filterObj);
@@ -247,6 +255,20 @@ const DropDown= React.forwardRef(({
     setSelectSchoolList([]);
     // setSelectedDates(null);
   };
+
+  const handleQuestionChange = (questionCategory) => {
+    const filterObj = {};
+    if (questionDataList) filterObj.questionCategory = questionCategory;
+    if (filterData) filterData(filterObj);
+
+    setSelectDistrict("");
+    setSelectBlock("");
+    setSelectCluster("");
+    setSelectClusterList([]);
+    setSelectBlockList([]);
+    setSelectSchoolList([]);
+  };
+
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
@@ -290,14 +312,10 @@ const DropDown= React.forwardRef(({
   //   selectSchool,
   //   selectedDates,
   // ]);
-  
-  
-
-
   return (
     <>
       <Grid container spacing={1}>
-        {reportCategory && (
+        {/* {reportCategory && (
           <Grid
             item
             xs={12}
@@ -316,7 +334,7 @@ const DropDown= React.forwardRef(({
               menu_first="none"
             />
           </Grid>
-        )}
+        )} */}
         {stepDataList && (
           <Grid
             item
@@ -339,6 +357,26 @@ const DropDown= React.forwardRef(({
               label={"Select Step"}
               id_variable="step_key"
               name_variable="step_value"
+              menu_first="none"
+            />
+          </Grid>
+        )}
+        {questionDataList && (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={2}
+          >
+            <DropdownComp
+              value={filter?.questionCategory}
+              multiMenu={questionDataList}
+              id={"step-drop"}
+              getSelected={(questionCategory) => handleQuestionChange(questionCategory)}
+              label={"Select Question"}
+              id_variable="questionId"
+              name_variable="questionText"
               menu_first="none"
             />
           </Grid>
