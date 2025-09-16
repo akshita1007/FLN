@@ -1,0 +1,43 @@
+
+.custom-range-picker {
+    border-radius: 4px; 
+    border: 1.2px solid #cecece;
+    cursor: pointer !important;
+    
+  }
+  
+
+  .custom-range-picker:hover {
+    border-color: #353535; 
+  }
+  
+
+  .custom-range-picker:focus,
+  .custom-range-picker.ant-picker-focused {
+    border-color: #1976d2;
+    border-width: 2px;
+   
+  }
+  .custom-range-picker input{
+    padding: 2px 0 !important;
+    font-weight:490 ;
+  }
+  
+  .custom-range-picker:focus-visible {
+    outline: none;
+  }
+  
+
+  .custom-range-picker.ant-picker-focused {
+    outline: none;
+  }
+  
+
+  .custom-range-picker input::placeholder {
+    color: #666666 !important; 
+    font-size: 15px;
+    font-weight: 490;
+    
+  }
+
+ 

@@ -1,0 +1,157 @@
+.login-app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+}
+
+.log_container {
+  display: flex;
+  width: 80%;
+  max-width: 1000px;
+  background: #1f2c3e;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.6s;
+}
+
+.log_container.flip {
+  transform: rotateY(180deg);
+}
+
+.log_left,
+.log_right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.log_left {
+  background: #f7f9fc;
+}
+
+.log_right {
+  background: rgb(3, 3, 148);
+  color: #fff;
+}
+
+.left-head {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.left-sub-head {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.log-img img {
+  max-width: 100%;
+}
+
+.log_login-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.log_login-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.log_form {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.form__input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form__input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form__input {
+  width: 90%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 5px;
+}
+
+.login-btn {
+  width: 40%;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #66a6ff, #89f7fe);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.otp-input {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.otp-input input {
+  width: 50px;
+  height: 55px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  outline: none;
+  transition: 0.3s;
+}
+
+.otp-input input:focus {
+  border-color: #66a6ff;
+  box-shadow: 0 0 5px #66a6ff;
+}
+
+@media (max-width: 768px) {
+  .log_container {
+    flex-direction: column;
+    height: auto;
+  }
+  .log_left,
+  .log_right {
+    padding: 20px;
+  }
+}
