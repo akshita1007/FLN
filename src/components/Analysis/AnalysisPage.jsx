@@ -31,10 +31,13 @@ import NoData from "../../utils/NoData/NoData";
 import Loader from "../../utils/Loader/Loader";
 
 const stepDataList = [
-  { step_key: "step1", step_value: "Step 1" },
   { step_key: "step2", step_value: "Step 2" },
   { step_key: "step3", step_value: "Step 3" },
-  { step_key: "step4", step_value: "Step 4" },
+];
+
+const reportCategory = [
+  { category_key: "1", category_value: "Data List" },
+  { category_key: "2", category_value: "Questions Based Analysis" },
 ];
 
 const subjectCodeList = [
@@ -74,7 +77,18 @@ const AnalysisPage = () => {
   const [countData, setCountData] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [questionList, setQuestionList] = useState([]);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [selectedStep, setSelectedStep] = useState(stepDataList[0]?.step_key);
+
+  const handleDataFromChild = useCallback((data) => {
+    setSelectedStep(data);
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      step: data,
+      // If the selected step is not 2 or 3, remove the subjectCode
+      ...(data === "step2" || data === "step3" || data === "step4" ? { subjectCode: subjectCodeList[selectedTab].subjectCode } : { subjectCode: undefined })
+    }));
+  }, [selectedTab]);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -107,46 +121,57 @@ const AnalysisPage = () => {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    if (countData && countData.length > 0) {
-      const formattedQuestions = countData.map((item, index) => ({
-        questionId: item.questionText, // A unique key for each question
-        questionText: item.questionText,
-      }));
-      setQuestionList(formattedQuestions);
-      console.log("formattedQuestions", formattedQuestions);
-    } else {
-      setQuestionList([]);
-    }
-  }, [countData]);
-
-  // Handle tab change and update filter
-  const handleTabChange = useCallback(
-    (event, newValue) => {
-      setSelectedTab(newValue);
-      setFilter((prevFilter) => ({
-        ...prevFilter,
-        subjectCode: subjectCodeList[newValue].subjectCode,
-      }));
-    },
-    []
-  );
+  const handleTabChange = useCallback((event, newValue) => {
+    setSelectedTab(newValue);
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      subjectCode: subjectCodeList[newValue].subjectCode,
+    }));
+  }, []);
 
   const onFilterUpdate = useCallback((newFilter) => {
     setFilter((prevFilter) => ({ ...prevFilter, ...newFilter }));
   }, []);
 
-  const handleDataFromChild = useCallback((data) => {
-    setSelectedStep(data);
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      step: data,
-      // If the selected step is not 2 or 3, remove the subjectCode
-      ...(data === "step2" || data === "step3" || data === "step4" ? { subjectCode: subjectCodeList[selectedTab].subjectCode } : { subjectCode: undefined })
-    }));
-  }, [selectedTab]);
+  const summaryMetrics = useMemo(() => {
+    if (!countData?.length) {
+      return {
+        totalQuestions: 0,
+        totalResponses: 0,
+        averageOptions: 0,
+        topQuestion: null,
+      };
+    }
 
-  // Memoize the processed chart data to avoid re-computation
+    let totalResponses = 0;
+    let topQuestion = null;
+    let optionsCount = 0;
+
+    countData.forEach((question, index) => {
+      const optionList = question?.option || [];
+      const questionTotal = optionList.reduce(
+        (sum, opt) => sum + (opt?.count || 0),
+        0
+      );
+      totalResponses += questionTotal;
+      optionsCount += optionList.length;
+
+      if (!topQuestion || questionTotal > topQuestion.total) {
+        topQuestion = {
+          text: question?.questionText || `Question ${index + 1}`,
+          total: questionTotal,
+        };
+      }
+    });
+
+    return {
+      totalQuestions: countData.length,
+      totalResponses,
+      averageOptions: Number((optionsCount / countData.length || 0).toFixed(1)),
+      topQuestion,
+    };
+  }, [countData]);
+
   const chartDataArray = useMemo(() => {
     if (!countData?.length) return [];
 
@@ -312,12 +337,116 @@ const AnalysisPage = () => {
   );
 
   return (
-    <Container maxWidth="auto" className="analysis-page" sx={{ bgcolor: Colors.bg.bg1, padding: { xs: 0 } }}>
-      <Header title={"Analysis Report"} />
+    <Container
+      maxWidth="xl"
+      className="analysis-page"
+      sx={{
+        minHeight: "100vh",
+        py: 3,
+        px: { xs: 1, sm: 2, md: 4 },
+        background: `linear-gradient(180deg, ${Colors.extra.e8} 0%, ${Colors.bg.bg1} 40%, ${Colors.grey.g100} 100%)`,
+      }}
+    >
+      <Header title="Analysis Dashboard" />
 
-      <Box>
-        <Card sx={{ boxShadow: "none" }}>
-          <CardContent>
+      <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 3 }}>
+        <Grid container spacing={2}>
+          {summaryCards.map((card) => {
+            const Icon = card.icon;
+            const formattedValue =
+              typeof card.value === "number"
+                ? card.value.toLocaleString()
+                : card.value;
+
+            return (
+              <Grid item xs={12} sm={6} md={4} key={card.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    borderRadius: 3,
+                    position: "relative",
+                    overflow: "hidden",
+                    boxShadow: "0 20px 45px -25px rgba(15, 23, 42, 0.45)",
+                    backgroundColor: Colors.common.white,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      inset: 0,
+                      background: card.accent,
+                      opacity: 0.12,
+                    }}
+                  />
+                  <CardContent
+                    sx={{
+                      position: "relative",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                    }}
+                  >
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Box
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: "50%",
+                          background: alpha(Colors.primary.main, 0.12),
+                          display: "grid",
+                          placeItems: "center",
+                          color: Colors.primary.dark,
+                        }}
+                      >
+                        <Icon />
+                      </Box>
+                      <Box>
+                        <Typography variant="body2" sx={{ color: Colors.grey.g600 }}>
+                          {card.label}
+                        </Typography>
+                        <Typography variant="h5" sx={{ color: Colors.extra.e3, fontWeight: 700 }}>
+                          {formattedValue}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                    <Divider sx={{ borderColor: alpha(Colors.grey.g400, 0.4) }} />
+                    <Typography variant="body2" sx={{ color: Colors.grey.g600 }}>
+                      {card.helper}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        <Card
+          sx={{
+            borderRadius: 4,
+            overflow: "hidden",
+            boxShadow: "0 24px 60px -32px rgba(15, 23, 42, 0.45)",
+          }}
+        >
+          <Box
+            sx={{
+              background: Colors.gradient.shades,
+              color: Colors.primary.contrastText,
+              py: 2.5,
+              px: { xs: 2, md: 3 },
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Refine Your Analysis
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: alpha(Colors.primary.contrastText, 0.8) }}
+            >
+              Choose the step, subject, and category to update the visualisations.
+            </Typography>
+          </Box>
+
+          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
             <DropDown
               filterData={onFilterUpdate}
               stepDataList={stepDataList}
@@ -326,40 +455,42 @@ const AnalysisPage = () => {
               sendData={handleDataFromChild}
               questionDataList={questionList}
             />
-          </CardContent>
-        </Card>
-      </Box>
-      {(selectedStep === "step2" || selectedStep === "step3" || selectedStep === "step4") && (
-        <>
-          <Box sx={{ width: "100%", px: "20px" }}>
+
             <Tabs
               value={selectedTab}
               onChange={handleTabChange}
-              variant="fullWidth"
-              indicatorColor="primary"
-              textColor="inherit"
+              variant="scrollable"
+              scrollButtons="auto"
+              TabIndicatorProps={{ style: { display: "none" } }}
               aria-label="subject tabs"
+              sx={{
+                mt: 1,
+                alignSelf: { xs: "stretch", md: "flex-start" },
+                "& .MuiTab-root": {
+                  textTransform: "none",
+                  fontWeight: 600,
+                  minHeight: 0,
+                  px: 2.5,
+                  py: 1.25,
+                  mr: 1.5,
+                  borderRadius: 2,
+                  color: Colors.grey.g700,
+                  backgroundColor: alpha(Colors.primary.light, 0.08),
+                  transition: "all 0.3s ease",
+                },
+                "& .MuiTab-root.Mui-selected": {
+                  color: Colors.primary.contrastText,
+                  background: Colors.primary.dark,
+                  boxShadow: "0 10px 22px rgba(37, 99, 235, 0.25)",
+                },
+              }}
             >
               {subjectCodeList.map((item) => (
-                <Tab
-                  key={item.subjectCode}
-                  label={item.subjectCodeValue}
-                  sx={{
-                    fontWeight: "bold",
-                    background: Colors.primary.dark,
-                    color: Colors.primary.Extra,
-                    transition: "background 0.3s ease, box-shadow 0.3s ease",
-                    "&.Mui-selected": {
-                      background: Colors.primary.darker,
-                      color: Colors.primary.contrastText,
-                    },
-                  }}
-                />
+                <Tab key={item.subjectCode} label={item.subjectCodeValue} />
               ))}
             </Tabs>
-          </Box>
-        </>
-      )}
+          </CardContent>
+        </Card>
 
         {isLoading ? (
           <Box
