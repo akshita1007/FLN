@@ -1,208 +1,194 @@
 import React from "react";
-import { Colors } from "../../utils/Theme/Colors";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Box, Button, Grid, Menu, MenuItem, Typography } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import Adminicon from "../../Assets/icons/admin.png";
-import notificationicon from "../../Assets/icons/notification.png";
-import flnlogo from "../../Assets/fln.svg";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Adminicon from "../../Assets/icons/admin.png";
+import notificationicon from "../../Assets/icons/notification.png";
 
-const menuItems = [
-  { id: "logout", title: "Logout", icon: LogoutIcon, path: "/logout" },
-];
-
-// Define a new color palette to match the dashboard theme
+// Define color palette
 const headerPalette = {
-  background: "#246a89",
-  iconText: "#246a89", // Using the same dark color as the sidebar
-  textPrimary: "#F0F2F5", // Lighter text color for contrast
+  background: "#FFFFFF",
+  iconText: "#003566",
+  textPrimary: "#1a1a1a",
 };
 
-const Header = (props) => {
+const Header = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleLogout = () => {
+    setOpenDialog(false);
+    navigate("/logout"); // redirect
   };
 
   return (
     <>
-    <Grid
-      item
-      xs={12}
-      sx={{
-        display: "flex",
-        backgroundColor: "#FFFFFF",
-        padding: "9px",
-        // borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-      }}
-    >
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography
-          variant="h6"
-          sx={{
-            color: headerPalette.iconText,
-            fontWeight: "bold",
-            marginLeft: "10px",
-            marginTop: "6px",
-          }}
-        >
-          <img src={flnlogo} alt="flnlogo" style={{ paddingTop: "1rem" }} />
-        </Typography>
-        <Typography sx={{ color: headerPalette.iconText }}></Typography>
-      </Box>
+      {/* Main Header */}
       <Grid
         item
         xs={12}
-        sx={{ display: "flex", alignItems: "center", ml: "auto", gap: 2 }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: headerPalette.background,
+          padding: "12px 20px",
+          minHeight: "64px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            ml: "auto",
-            cursor: "pointer",
-          }}
-        >
-          <div
+        {/* Left Section - Title */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            variant="h6"
             sx={{
-              width: "26px",
-              height: "26px",
-              "&:hover": {
-                transform: "translateY(-3px)",
-              },
               color: headerPalette.iconText,
+              fontWeight: "bold",
+              fontSize: "18px",
+              lineHeight: 1.2,
             }}
-          />
-          <img src={notificationicon} alt="adm" width={30} />
-          <Typography sx={{ fontSize: "12px", color: headerPalette.iconText }}>
-            Notifications
+          >
+            Foundation Literacy and Numeracy
           </Typography>
         </Box>
 
-        {/* with Notifications icons*/}
-        {/* <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              ml: "auto",
-              position: "relative",
-            }}
-          >
-
-            <Box sx={{ position: "relative", display: "inline-flex" }}>
-              <NotificationsIcon sx={{ width: "26px", height: "26px" }} />
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  transform: "translate(50%, -50%)",
-                  backgroundColor: "red",
-                  color: "white",
-                  width: "16px",
-                  height: "16px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "10px",
-                  fontWeight: "bold",
-                  boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                5
-              </Box>
-            </Box>
-            <Typography sx={{ fontSize: "12px" }}>Notifications</Typography>
-          </Box> */}
-
-        <Button
-          id="basic-button"
-          aria-controls={open ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-        >
+        {/* Right Section - Actions */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+          {/* Notifications */}
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              ml: "auto",
-              gap: "1",
               cursor: "pointer",
             }}
           >
-            <div
+           
+            <img src={notificationicon} alt="notifications" width={25} />
+            {/* <Typography
               sx={{
-                width: "26px",
-                height: "26px",
-                "&:hover": {
-                  transform: "translateY(-3px)",
-                },
+                fontSize: "10px",
+                fontWeight: 600,
                 color: headerPalette.iconText,
-              }}
-            />
-            <img src={Adminicon} alt="adminicon" width={30} />
-            <Typography
-              sx={{
-                fontSize: "12px",
-                color: headerPalette.iconText,
-                textTransform: "none",
+                mt: 0.5,
               }}
             >
-              Admin
-            </Typography>
+              Notifications
+            </Typography> */}
           </Box>
-        </Button>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
+
+          {/* Admin Button */}
+          <Button
+            sx={{ textTransform: "none", minWidth: "auto", p: 0 }}
+            onClick={() => setOpenDialog(true)}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <img src={Adminicon} alt="admin" width={25} />
+              {/* <Typography
+                sx={{
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  color: headerPalette.iconText,
+                  mt: 0.5,
+                }}
+              >
+                Admin
+              </Typography> */}
+            </Box>
+          </Button>
+        </Box>
+      </Grid>
+
+      {/* Logout Confirmation Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: "12px",
+            padding: "10px",
+            minWidth: "350px",
+            textAlign: "center",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
+          },
+        }}
+        BackdropProps={{
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backdropFilter: "blur(4px)", // ✅ Blurry background
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            color: headerPalette.iconText,
           }}
         >
-          {menuItems?.map((item) => (
-            <MenuItem
-              sx={{ gap: "10px" }}
-              onClick={() => {
-                navigate(item?.path);
-              }}
-            >
-              <item.icon /> {item.title}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Grid>
-    </Grid>
-    <Grid
-      item
-      xs={12}
-      sx={{
-        display: "flex",
-        backgroundColor: "#FFFFFF",
-        padding: "9px",
-        // borderRadius: "8px",
-        marginTop: "5px",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-      }}
-    >
-      <Box>
-        <Typography sx={{ marginLeft: "10px", marginTop: "6px" }} variant="h6">{props.title}</Typography>
-      </Box>
-    </Grid>
+          Confirm Logout
+        </DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ fontSize: "15px", color: "#555" }}>
+            Are you sure you want to logout?
+          </Typography>
+        </DialogContent>
+
+        <DialogActions
+          sx={{ justifyContent: "center", gap: 2, paddingBottom: "16px" }}
+        >
+          <Button
+            onClick={() => setOpenDialog(false)}
+            variant="outlined"
+            sx={{
+              borderRadius: "8px",
+              textTransform: "none",
+              px: 3,
+              borderColor: headerPalette.iconText,
+              color: headerPalette.iconText,
+              "&:hover": {
+                backgroundColor: "rgba(36,106,137,0.1)",
+                borderColor: headerPalette.iconText,
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            startIcon={<LogoutIcon />}
+            sx={{
+              borderRadius: "8px",
+              textTransform: "none",
+              px: 3,
+              backgroundColor: "#e63946",
+              "&:hover": {
+                backgroundColor: "#d62828",
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
