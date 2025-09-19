@@ -508,7 +508,7 @@ const AnalysisPage = () => {
       </Box>
       {(selectedStep === "step2" || selectedStep === "step3" || selectedStep === "step4") && (
         <>
-          <Box sx={{ width: "97%", px: "20px" }}>
+          <Box sx={{ width: "100%", px: "20px" }}>
             <Tabs
               value={selectedTab}
               onChange={handleTabChange}
