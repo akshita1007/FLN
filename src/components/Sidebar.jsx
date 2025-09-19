@@ -12,13 +12,20 @@ import submission from "../Assets/icons/submission.png";
 import visit from "../Assets/icons/visit.png";
 
 // Formal color palette
+// const formalPalette = {
+//   background: "#001d3d",  
+//   textPrimary: "#ffffff",
+//   textSecondary: "#BDC3C7",
+//   active: "#003566",
+//   // hover: "#2f7fa1ff",
+//   hover: "#ffffff"
+// };
 const formalPalette = {
-  background: "#1a2980" ,     //"#00194d" //2C3E50  //"#1E293B"
-  textPrimary: "#ECF0F1",
+  background: "#001d3d",  
+  textPrimary: "#ffffff",
   textSecondary: "#BDC3C7",
-  active: "#3498DB",
-  // hover: "#2f7fa1ff",
-  hover: "rgba(47, 127, 161, 0.7)"
+  active: "#003566",
+  hover: "rgba(255, 255, 255, 0.1)" // ✅ foggy / glassy hover effect
 };
 
 // Keyframe animations for a polished look
@@ -103,8 +110,8 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
   "& .icon-img": {
     width: "21px",
     height: "21px",
-    padding:"3px",
-    backgroundColor:"#fff",
+    padding: "3px",
+    backgroundColor: "#fff",
     borderRadius: "5px",
     // filter: "invert(70%)",
     transition: "transform 0.3s ease, filter 0.3s ease",
@@ -113,8 +120,8 @@ const StyledSidebarItem = styled("div")(({ isActive, isCollapsed }) => ({
 
   "&:hover": {
     color: formalPalette.textPrimary,
-    background: formalPalette.hover,
-    border: "1px solid black",
+    // background: formalPalette.hover,
+    // border: "1px solid black",
   },
 
   "&:hover .icon-img": {
