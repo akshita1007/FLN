@@ -152,19 +152,19 @@ const CacListPage = () => {
             ) : (
               <TableContainer component={Paper}>
                 <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>District</TableCell>
-                      <TableCell>Block</TableCell>
-                      <TableCell>Cluster Name</TableCell>
-                      <TableCell>Mobile</TableCell>
-                      <TableCell>Total School Visit</TableCell>
-                      <TableCell>Class 1</TableCell>
-                      <TableCell>Class 2</TableCell>
-                      <TableCell>Class 3</TableCell>
-                      <TableCell>Class 4</TableCell>
-                      <TableCell>Class 5</TableCell>
+                  <TableHead sx={{ backgroundColor: "#2563eb" }}>
+                    <TableRow >
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Name</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>District</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Block</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Cluster Name</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Mobile</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Total School Visit</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Class 1</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Class 2</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Class 3</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Class 4</TableCell>
+                      <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Class 5</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

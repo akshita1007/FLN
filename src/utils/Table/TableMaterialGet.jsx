@@ -13,7 +13,7 @@ import img_excel from '../../Assets/xls.png';
 import { base64Font } from "./Base64Font";
 import { useAuth } from "../../context/AuthContext";
 
-function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCount, hidden_col = "" }) {
+function TableMaterialGet({ URL, body = {}, column_tab, table_name, apiBody, apiCount, hidden_col = "" }) {
   const [dataTable, setDataTable] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState(hidden_col);
-  const {token} = useAuth();
+  const { token } = useAuth();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -36,11 +36,11 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
       setIsRefetching(true);
       axios.get(URL,
         {
-          
+
           headers: {
             'Authorization': `Bearer ${token}`
           },
-          params:{...body,...(searchQuery && {searchKey:searchQuery}),page:pagination.pageIndex + 1},
+          params: { ...body, ...(searchQuery && { searchKey: searchQuery }), page: pagination.pageIndex + 1 },
           cancelToken: cancelToken.token
         }
       )
@@ -96,11 +96,11 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
           sortField: sorting[0],
           search: searchQuery,
           filters: columnFilters,
-        },{
+        }, {
           headers: {
-              'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           }
-      });
+        });
         if (response.data?.success) {
           allData = [...allData, ...(response.data?.[apiBody] || [])];
           if (pageIndex === 0) {
@@ -224,7 +224,7 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
         .getAllColumns()
         .filter(col => col?.getIsVisible() && col?.id !== 'mrt-row-numbers' && col?.id !== 'mrt-row-select')
         .map(col => col?.columnDef);
-      
+
       const hasVisibleColumns = visibleColumns.length > 0;
 
       return (
@@ -263,12 +263,12 @@ function TableMaterialGet({ URL, body={}, column_tab, table_name, apiBody, apiCo
                   </>}
                 </>
               )}
-              <Typography color={"darkblue"} sx={{ fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif;`, fontWeight: '600'}}>
+              <Typography color={"darkblue"} sx={{ fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif;`, fontWeight: '600' }}>
                 {table_name}
               </Typography>
             </Box>
-          ):<>
-          <Box sx={{
+          ) : <>
+            <Box sx={{
               display: 'flex',
               gap: '16px',
               padding: '4px 0px',

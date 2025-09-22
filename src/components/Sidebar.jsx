@@ -21,7 +21,8 @@ import visit from "../Assets/icons/visit.png";
 //   hover: "#ffffff"
 // };
 const formalPalette = {
-  background: "#001d3d",  
+  // background: "#001d3d",
+  background: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
   textPrimary: "#ffffff",
   textSecondary: "#BDC3C7",
   active: "#003566",

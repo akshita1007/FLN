@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Divider,
   Typography,
@@ -12,7 +10,7 @@ import {
 } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext"
+import { useAuth } from "../../context/AuthContext";
 import { useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import Toast from "../../utils/Toast/Toast";
@@ -23,121 +21,76 @@ import ChartOne from "../AllCharts/ChartOne";
 import ChartTwo from "../AllCharts/ChartTwo";
 import ChartThree from "../AllCharts/ChartThree";
 
-
-// Import icons
 import surveyicon from "../../Assets/icons/survey.png";
 import totalCACicon from "../../Assets/icons/totalCAC.png";
 import totalSchoolicon from "../../Assets/icons/totalSchool.png";
 import visitedSchoolicon from "../../Assets/icons/visitedSchool.png";
-import { blue } from "@mui/material/colors";
 
-// Formal color palette
+// 🎨 UX Color Palette
 const formalPalette = {
   primary: "#2C3E50",
-  secondary: "#3498DB",
-  background: "#F0F2F5",
+  accent: "#fca311", // Highlight
+  background: "#F9FAFB",
   cardBackground: "#FFFFFF",
   textPrimary: "#212121",
   textSecondary: "#757575",
-  textPrimaryLight: "#ffffffff",
-  textSecondaryLight: "#ffffffff",
   border: "#E0E0E0",
 };
 
-// Keyframe animations
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
+// 🔄 Animations
 const slideInLeft = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
 `;
 
-// Styled Components
-const StyledContainer = styled(Container)({
-  backgroundColor: formalPalette.background,
-  minHeight: "100vh",
-  // padding: "20px",
-  animation: `${fadeIn} 0.8s ease-out`,
-});
-
-const StyledCard = styled(Card)({
-  borderRadius: "12px",
-  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-  // boxShadow: "none",    
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.21)",
-    boxShadow: "none",    // ✅ No shadow
-    transition: "transform 0.3s ease-in-out",
-  },
-  animation: `${fadeIn} 0.8s ease-out`,
-  height: "100%",
-  display: "flex",
-  marginTop: "10px",
-  marginBottom: "10px",
-  flexDirection: "column",
-});
-
+// 📦 Card Styles
 const CustomCard = styled(Card)(({ color }) => ({
-  borderRadius: "12px",
-  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-  "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
-  },
+  borderRadius: "18px",
+  padding: "20px",
   display: "flex",
   alignItems: "center",
-  padding: "10px",
   gap: "20px",
-  background: color,//"#FFFFFF",
-  height: "100%",
+  background: color,
+  minHeight: "120px",
+  transition: "all 0.3s ease",
+  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.08)",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: "0 8px 18px rgba(0, 0, 0, 0.12)",
+  },
 }));
 
-const IconWrapper = styled(Box)(({ theme, color }) => ({
+const IconWrapper = styled(Box)(({ color }) => ({
   width: "60px",
   height: "60px",
   borderRadius: "50%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: color || formalPalette.primary,
-  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+  background: color,
+  boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
+  flexShrink: 0,
   "& img": {
+    width: "28px",
+    height: "28px",
     filter: "invert(100%)",
-    width: "30px",
-    height: "30px",
   },
 }));
 
-const StyledTypography = styled(Typography)({
+const TitleTypography = styled(Typography)({
+  fontSize: "0.85rem",
   fontWeight: 600,
-  fontSize: "1.8rem",
-  color: formalPalette.textPrimaryLight,
+  textTransform: "uppercase",
+  letterSpacing: "0.6px",
+  marginBottom: "4px",
+  color: "#f5f5f5",
 });
 
-const TitleTypography = styled(Typography)({
-  fontWeight: 400,
-  fontSize: "0.9rem",
-  color: formalPalette.textSecondaryLight,
-  textTransform: "uppercase",
-  letterSpacing: "1px",
+const StyledTypography = styled(Typography)({
+  fontSize: "1.7rem",
+  fontWeight: 700,
+  color: "#fff",
+  lineHeight: 1.2,
 });
 
 const Dashboard = () => {
@@ -166,9 +119,6 @@ const Dashboard = () => {
             },
           }
         );
-        if (response.data.success) {
-          setCardCount(response.data.data ? response.data.data : {});
-        }
         if (response.data.success) {
           setCardCount(response.data.data || {});
         }
@@ -217,36 +167,35 @@ const Dashboard = () => {
     [countData]
   );
 
+  // 📊 Card Widgets
   const cardWidgets = [
     {
       title: "Total Schools",
       total: cardCount.totalSchool || 0,
       icon: totalSchoolicon,
-      background: "linear-gradient(135deg, #74ebd5 0%, #3498DB 100%)",
-      color: "linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%)",
-      shade: "linear-gradient(135deg, #bafaffff 0%, #89a5e0ff 100%)"
-
+      color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
+      shade: "linear-gradient(135deg, #fefae0 0%, #fefae0 100%)",
     },
     {
       title: "Total CACs",
       total: cardCount.totalCaC || 0,
       icon: totalCACicon,
-      color: "linear-gradient(135deg, #FAD961 0%, #F76B1C 100%)", // Green
-      shade: "linear-gradient(135deg, #faefc9ff 0%, #f9c5a8ff 100%)",
+      color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
+      shade: "linear-gradient(135deg, #fefae0 0%, #fefae0 100%)",
     },
     {
       title: "Total Survey",
       total: cardCount.totalSubmission || 0,
       icon: surveyicon,
-      color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", // Purple
-      shade: "linear-gradient(135deg, #afbcf7ff 0%, #d8b1ffff 100%)"
+      color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
+      shade: "linear-gradient(135deg, #fefae0 0%, #fefae0 100%)",
     },
     {
       title: "Total Visited School",
       total: cardCount.visitSchoolCount || 0,
       icon: visitedSchoolicon,
-      color: "linear-gradient(135deg, #80e943ff 0%, #38f9d7 100%)", // Yellow
-      shade: "linear-gradient(135deg, #d7f7c5ff 0%, #9effedff 100%)"
+      color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
+      shade: "linear-gradient(135deg, #fefae0 0%, #fefae0 100%)",
     },
   ];
 
@@ -257,56 +206,28 @@ const Dashboard = () => {
       </IconWrapper>
       <Box>
         <TitleTypography>{title}</TitleTypography>
-        <StyledTypography>{total}</StyledTypography>
+        <StyledTypography sx={{ color: formalPalette.accent }}>
+          {total}
+        </StyledTypography>
       </Box>
     </CustomCard>
   );
 
   return (
     <Container maxWidth="auto" className="analysis-page" sx={{ padding: { xs: 0 } }}>
-              <Header title={"Dashboard"}/>
+      <Header title={"Dashboard"} />
 
-              <Box sx={{ p: "20px", mb: "25px" }}>
-                <Card sx={{ boxShadow: "none" }}>
-                  <CardContent>
-                    {/* <DropDown
-                      filterData={onFilterUpdate}
-                      stepDataList={stepDataList}
-                      filter={filter}
-                    /> */}
-                    <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
-                  </CardContent>
-                </Card>
-              </Box>
-    {/* // <Grid container>
-    //     <Grid item xs={12}>
-    //       <Header />
-    //     </Grid>
-    //     <Grid item xs={12}>
-    //       <Box sx={{ p: "20px", mb: "25px" }}>
-    //         <Card sx={{ boxShadow: "none" }}>
-    //           <CardContent>
-    //             <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
-    //           </CardContent>
-    //         </Card>
-    //       </Box>
-    //     </Grid> */}
+      {/* 🔽 Filters */}
+      <Box sx={{ p: "20px", mb: "25px" }}>
+        <Card sx={{ boxShadow: "none", borderRadius: "12px", background: formalPalette.cardBackground }}>
+          <CardContent>
+            <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} />
+          </CardContent>
+        </Card>
+      </Box>
 
+      {/* 📦 Stats Cards */}
       <Grid container spacing={4} sx={{ marginBottom: 4 }}>
-        {/* <Container maxWidth="auto" className="analysis-page" sx={{ bgcolor: Colors.bg.bg1, padding: { xs: 0 } }}>
-              <Header />
-        
-              <Box sx={{ p: "20px", mb: "25px" }}>
-                <Card sx={{ boxShadow: "none" }}>
-                  <CardContent>
-                    <DropDown
-                      filterData={onFilterUpdate}
-                      stepDataList={stepDataList}
-                      filter={filter}
-                    />
-                  </CardContent>
-                </Card>
-              </Box> */}
         <Grid container spacing={2} sx={{ marginLeft: 5, marginRight: 2 }}>
           {cardWidgets.map((card, index) => (
             <Grid
@@ -315,8 +236,7 @@ const Dashboard = () => {
               sm={6}
               md={3}
               key={index}
-              sx={{ animation: `${slideInLeft} 0.5s ease-out ${index * 0.1}s` }}
-            // ml={2}
+              sx={{ animation: `${slideInLeft} 0.6s ease-out ${index * 0.12}s` }}
             >
               {renderCard(card.title, card.total, card.icon, card.color, card.shade)}
             </Grid>
@@ -326,15 +246,16 @@ const Dashboard = () => {
 
       <Divider sx={{ borderColor: formalPalette.border }} />
 
+      {/* 📊 Charts */}
       {isLoading ? (
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "400px",
+            minHeight: "380px",
             p: "20px",
-            mb: "25px"
+            mb: "25px",
           }}
         >
           <Loader msg={"Fetching Data... Please Wait"} size={50} />
@@ -348,7 +269,12 @@ const Dashboard = () => {
                   return (
                     <Grid item xs={12} md={6} lg={4} key={index}>
                       <Box sx={{ p: "20px", mb: "25px" }}>
-                        <Card >
+                        <Card
+                          sx={{
+                            borderRadius: "16px",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                          }}
+                        >
                           <CardContent>
                             <ChartOne data={data} />
                           </CardContent>
@@ -356,33 +282,12 @@ const Dashboard = () => {
                       </Box>
                     </Grid>
                   );
-                // case "किस विषय का अवलोकन किया गया?":
-                //   return (
-                //     <Grid item xs={12} md={6} lg={4} key={index}>
-                //       <StyledCard>
-                //         <CardContent>
-                //           <ChartTwo data={data} />
-                //         </CardContent>
-                //       </StyledCard>
-                //     </Grid>
-                //   );
-                // case "पढाई जा रही कक्षा की बैठक व्यवस्था कैसी हैं ?":
-                //   return (
-                //     <Grid item xs={12} md={6} lg={4} key={index}>
-                //       <StyledCard>
-                //         <CardContent>
-                //           <ChartThree data={data} />
-                //         </CardContent>
-                //       </StyledCard>
-                //     </Grid>
-                //   );
                 default:
                   return null;
               }
             })
-            // <></>
           ) : (
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ px: 4 }}>
               <NoData />
             </Grid>
           )}
@@ -391,4 +296,5 @@ const Dashboard = () => {
     </Container>
   );
 };
+
 export default Dashboard;

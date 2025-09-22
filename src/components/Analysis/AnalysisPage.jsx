@@ -31,8 +31,10 @@ import NoData from "../../utils/NoData/NoData";
 import Loader from "../../utils/Loader/Loader";
 
 const stepDataList = [
-  { step_key: "step2", step_value: "Step 2" },
-  { step_key: "step3", step_value: "Step 3" },
+  { step_key: "step1", step_value: "कक्षा के बारे में जानकारी" },
+  { step_key: "step2", step_value: "भाषा शिक्षण के खंड" },
+  { step_key: "step3", step_value: "मौखिक भाषा विकास एवं सम्बंधित लेखन" },
+  { step_key: "step4", step_value: "खंड-3: विद्यालय/कक्षा के सामान्य अवलोकन" },
 ];
 
 const reportCategory = [
@@ -299,7 +301,7 @@ const AnalysisPage = () => {
         value: summaryMetrics.totalQuestions,
         helper: "Tracked in the current selection",
         icon: QueryStatsOutlinedIcon,
-        accent: Colors.gradient.shades,
+        accent: Colors.gradient.shades2,
       },
       {
         id: "total-responses",
@@ -307,7 +309,7 @@ const AnalysisPage = () => {
         value: summaryMetrics.totalResponses,
         helper: `Avg. ${summaryMetrics.averageOptions} options/question`,
         icon: InsightsOutlinedIcon,
-        accent: Colors.gradient.shades1,
+        accent: Colors.gradient.shades2,
       },
       {
         id: "top-question",
@@ -315,7 +317,7 @@ const AnalysisPage = () => {
         value: summaryMetrics.topQuestion?.total || "-",
         helper: summaryMetrics.topQuestion?.text || "No responses yet",
         icon: LeaderboardOutlinedIcon,
-        accent: Colors.gradient.shades,
+        accent: Colors.gradient.shades2,
       },
     ],
     [summaryMetrics]
@@ -337,19 +339,20 @@ const AnalysisPage = () => {
   );
 
   return (
-    <Container
-      maxWidth="xl"
-      className="analysis-page"
-      sx={{
-        minHeight: "100vh",
-        py: 3,
-        px: { xs: 1, sm: 2, md: 4 },
-        background: `linear-gradient(180deg, ${Colors.extra.e8} 0%, ${Colors.bg.bg1} 40%, ${Colors.grey.g100} 100%)`,
-      }}
-    >
+    // <Container
+    //   maxWidth="xl"
+    //   className="analysis-page"
+    //   sx={{
+    //     minHeight: "100vh",
+    //     py: 3,
+    //     px: { xs: 1, sm: 2, md: 4 },
+    //     background: `linear-gradient(180deg, ${Colors.extra.e8} 0%, ${Colors.bg.bg1} 40%, ${Colors.grey.g100} 100%)`,
+    //   }}
+    // >
+    <Container maxWidth="auto" className="analysis-page" sx={{ padding: { xs: 0 } }}>
       <Header title="Analysis Dashboard" />
 
-      <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 3 }}>
+      <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 3, px: { xs: 2, sm: 3, md: 4 }, }}>
         <Grid container spacing={2}>
           {summaryCards.map((card) => {
             const Icon = card.icon;
@@ -367,7 +370,9 @@ const AnalysisPage = () => {
                     position: "relative",
                     overflow: "hidden",
                     boxShadow: "0 20px 45px -25px rgba(15, 23, 42, 0.45)",
-                    backgroundColor: Colors.common.white,
+                    background: card.accent,
+                    // backgroundColor: Colors.common.white,
+
                   }}
                 >
                   <Box
@@ -386,31 +391,31 @@ const AnalysisPage = () => {
                       gap: 2,
                     }}
                   >
-                    <Stack direction="row" spacing={2} alignItems="center">
+                    <Stack direction="row" spacing={3} alignItems="center">
                       <Box
                         sx={{
                           width: 48,
                           height: 48,
-                          borderRadius: "50%",
+                          borderRadius: "70%",
                           background: alpha(Colors.primary.main, 0.12),
                           display: "grid",
                           placeItems: "center",
-                          color: Colors.primary.dark,
+                          color: Colors.bg.bg3,
                         }}
                       >
                         <Icon />
                       </Box>
                       <Box>
-                        <Typography variant="body2" sx={{ color: Colors.grey.g600 }}>
+                        <Typography variant="body2" sx={{ color: Colors.grey.g50 }}>
                           {card.label}
                         </Typography>
-                        <Typography variant="h5" sx={{ color: Colors.extra.e3, fontWeight: 700 }}>
+                        <Typography variant="h5" sx={{ color: Colors.bg.bg3, fontWeight: 700 }}>
                           {formattedValue}
                         </Typography>
                       </Box>
                     </Stack>
-                    <Divider sx={{ borderColor: alpha(Colors.grey.g400, 0.4) }} />
-                    <Typography variant="body2" sx={{ color: Colors.grey.g600 }}>
+                    <Divider sx={{ borderColor: alpha(Colors.bg.bg3, 0.3) }} />
+                    <Typography variant="body2" sx={{ color: Colors.grey.g50 }}>
                       {card.helper}
                     </Typography>
                   </CardContent>

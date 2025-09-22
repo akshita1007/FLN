@@ -10,6 +10,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Adminicon from "../../Assets/icons/admin.png";
 import notificationicon from "../../Assets/icons/notification.png";
@@ -62,54 +64,56 @@ const Header = () => {
         </Box>
 
         {/* Right Section - Actions */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+
+
+        {/* Right Section - Actions */}
+        {/* Right Section - Actions */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           {/* Notifications */}
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
               cursor: "pointer",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              backgroundColor: "rgba(0, 53, 102, 0.08)", // subtle background
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "rgba(0, 53, 102, 0.16)",
+              },
             }}
           >
-           
-            <img src={notificationicon} alt="notifications" width={25} />
-            {/* <Typography
-              sx={{
-                fontSize: "10px",
-                fontWeight: 600,
-                color: headerPalette.iconText,
-                mt: 0.5,
-              }}
-            >
-              Notifications
-            </Typography> */}
+            <NotificationsNoneIcon sx={{ fontSize: 20, color: headerPalette.iconText }} />
           </Box>
 
           {/* Admin Button */}
           <Button
-            sx={{ textTransform: "none", minWidth: "auto", p: 0 }}
             onClick={() => setOpenDialog(true)}
+            sx={{
+              minWidth: "auto",
+              p: 0,
+              borderRadius: "50%",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "rgba(0, 53, 102, 0.16)",
+              },
+            }}
           >
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
-                cursor: "pointer",
+                justifyContent: "center",
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                backgroundColor: "rgba(0, 53, 102, 0.08)",
               }}
             >
-              <img src={Adminicon} alt="admin" width={25} />
-              {/* <Typography
-                sx={{
-                  fontSize: "10px",
-                  fontWeight: 600,
-                  color: headerPalette.iconText,
-                  mt: 0.5,
-                }}
-              >
-                Admin
-              </Typography> */}
+              <AdminPanelSettingsIcon sx={{ fontSize: 20, color: headerPalette.iconText }} />
             </Box>
           </Button>
         </Box>

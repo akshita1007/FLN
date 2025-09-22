@@ -76,7 +76,7 @@ export const Colors = {
   bg: {
     bg1: "#f9fafb",
     bg2: "#f3f4f6",
-    bg3: "#6366f1",
+    bg3: "#fca311",
     bg4: "#2563eb",
     bg5: "#1d4ed8",
   },
@@ -95,6 +95,7 @@ export const Colors = {
   gradient: {
     shades: "linear-gradient(90deg, #2563eb, #38bdf8)",
     shades1: "linear-gradient(90deg, #ea580c, #dc2626)",
+    shades2: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
   },
 
   onHover: {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect,useImperativeHandle } from "react";
+import { useState, useEffect, useImperativeHandle } from "react";
 import {
   Select,
   InputLabel,
@@ -23,7 +23,7 @@ import Question from "../Questions/Question";
 
 const { RangePicker } = DatePicker;
 
-const DropDown= React.forwardRef(({
+const DropDown = React.forwardRef(({
   filterData,
   stepDataList,
   isSchool = false,
@@ -57,20 +57,20 @@ const DropDown= React.forwardRef(({
   const [selectSchoolList, setSelectSchoolList] = useState([]);
   const [selectedDates, setSelectedDates] = useState(null);
   const handleDateChange = (dates, dateStrings) => {
-    console.log(dates,dateStrings)
+    console.log(dates, dateStrings)
     const updatedFilter = {
       ...filter,
       startDate: dates[0].format("YYYY-MM-DD"),
       endDate: dates[1].format("YYYY-MM-DD"),
     };
     if (filterData) filterData(updatedFilter);
-   
+
 
   };
-   
+
   const handleChangeDistrict = (dist) => {
     const filterObj = {};
-    if (stepDataList ) filterObj.step = filter.step;
+    if (stepDataList) filterObj.step = filter.step;
     filterObj.districtId = dist;
     // setSelectDistrict(dist);
     // setSelectBlock("");
@@ -115,7 +115,7 @@ const DropDown= React.forwardRef(({
     // if (selectCluster) filterObj.clusterId = selectCluster;
     // if (stepDataList && selectStep) filterObj.step = selectStep;
     // if (isSchool && selectSchool) filterObj.schoolName = selectSchool;
-    if (stepDataList ) filterObj.step = filter.step;
+    if (stepDataList) filterObj.step = filter.step;
     filterObj.districtId = filter.districtId;
     filterObj.blockId = block;
     // setSelectBlock(block);
@@ -137,8 +137,8 @@ const DropDown= React.forwardRef(({
     setSelectBlockList([]);
     setSelectClusterList([]);
     setSelectSchoolList([]);
-    const filterObject={};
-    if(stepDataList) filterObject.step=stepDataList[0]?.step_key 
+    const filterObject = {};
+    if (stepDataList) filterObject.step = stepDataList[0]?.step_key
     filterData(filterObject)
   }
 
@@ -201,10 +201,10 @@ const DropDown= React.forwardRef(({
     setSelectSchoolList([]);
     // setSelectedDates(null);
     const filterObj = {};
-    if (stepDataList ) filterObj.step = filter.step;
+    if (stepDataList) filterObj.step = filter.step;
     filterObj.districtId = filter.districtId;
     filterObj.blockId = filter.blockId;
-    filterObj.clusterId=cluster;
+    filterObj.clusterId = cluster;
     if (filterData) filterData(filterObj);
   };
 
@@ -222,7 +222,7 @@ const DropDown= React.forwardRef(({
   };
 
   const handleStepChange = (step) => {
-    console.log("step",step)
+    console.log("step", step)
     sendData(step)
     const filterObj = {};
     if (stepDataList) filterObj.step = step;
@@ -243,7 +243,7 @@ const DropDown= React.forwardRef(({
     const filterObj = {};
     if (reportCategory) filterObj.category = category;
     if (filterData) filterData(filterObj);
-    
+
     // filterObj.districtId = dist;
     // setSelectStep(step);
     // setSelectDistrict("");
@@ -343,8 +343,8 @@ const DropDown= React.forwardRef(({
             md={4}
             lg={
               (stepDataList && isSchool) ||
-              (isSchool && isDate) ||
-              (isDate && stepDataList)
+                (isSchool && isDate) ||
+                (isDate && stepDataList)
                 ? 2
                 : 2.5
             }
@@ -388,8 +388,8 @@ const DropDown= React.forwardRef(({
           md={4}
           lg={
             (stepDataList && isSchool) ||
-            (isSchool && isDate) ||
-            (isDate && stepDataList)
+              (isSchool && isDate) ||
+              (isDate && stepDataList)
               ? 2
               : 2.5
           }
@@ -412,8 +412,8 @@ const DropDown= React.forwardRef(({
           md={4}
           lg={
             (stepDataList && isSchool) ||
-            (isSchool && isDate) ||
-            (isDate && stepDataList)
+              (isSchool && isDate) ||
+              (isDate && stepDataList)
               ? 2
               : 2.5
           }
@@ -436,15 +436,15 @@ const DropDown= React.forwardRef(({
           md={4}
           lg={
             (stepDataList && isSchool) ||
-            (isSchool && isDate) ||
-            (isDate && stepDataList)
+              (isSchool && isDate) ||
+              (isDate && stepDataList)
               ? 2
               : 2.5
           }
         >
           <DropdownComp
             value={filter?.clusterId}
-            multiMenu={ filter?.blockId ? selectClusterList  : []}
+            multiMenu={filter?.blockId ? selectClusterList : []}
             id={"cluster-drop"}
             getSelected={(cluster) => handleChangeCluster(cluster)}
             label={"Select Cluster"}
@@ -460,14 +460,14 @@ const DropDown= React.forwardRef(({
             md={4}
             lg={
               (stepDataList && isSchool) ||
-              (isSchool && isDate) ||
-              (isDate && stepDataList)
+                (isSchool && isDate) ||
+                (isDate && stepDataList)
                 ? 2
                 : 2.5
             }
           >
             <Autocomplete
-              options={filter?.clusterId ? selectSchoolList.map((school) => school?.school_name):[]}
+              options={filter?.clusterId ? selectSchoolList.map((school) => school?.school_name) : []}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -495,9 +495,9 @@ const DropDown= React.forwardRef(({
             <RangePicker
               value={filter?.startDate && filter?.endDate
                 ? [
-                    dayjs(filter.startDate, "YYYY-MM-DD"),
-                    dayjs(filter.endDate, "YYYY-MM-DD"),
-                  ]
+                  dayjs(filter.startDate, "YYYY-MM-DD"),
+                  dayjs(filter.endDate, "YYYY-MM-DD"),
+                ]
                 : null}
               onChange={handleDateChange}
               disabledDate={(current) =>
@@ -508,7 +508,7 @@ const DropDown= React.forwardRef(({
           </Grid>
         )}
 
-        <Grid item xs={12} sm={6} md={4} lg={1} sx={{ ml: "auto" }}>
+        {/* <Grid item xs={12} sm={6} md={4} lg={1} sx={{ ml: "auto" }}>
           <FormControl size="small" sx={{ display: "flex" }}>
             <Button
               variant="outlined"
@@ -539,7 +539,39 @@ const DropDown= React.forwardRef(({
               Reset
             </Button>
           </FormControl>
+        </Grid> */}
+        <Grid item xs={12} sm={6} md={4} lg={1} sx={{ ml: "auto" }}>
+          <FormControl size="small" sx={{ display: "flex" }}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<SettingsBackupRestoreIcon fontSize="small" />}
+              onClick={resetFunction}
+              sx={{
+                alignSelf: "flex-end",
+                borderRadius: 2, // ~8px
+                fontWeight: 500,
+                fontSize: "13px",
+                textTransform: "none",
+                px: 1.8,
+                py: 0.6,
+                color: "#023e8a",
+                borderColor: "#023e8a",
+                backgroundColor: Colors.common.white,
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "#023e8a",
+                  color: Colors.common.white,
+                  borderColor: "#023e8a",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+                },
+              }}
+            >
+              Reset
+            </Button>
+          </FormControl>
         </Grid>
+
       </Grid>
     </>
   );
