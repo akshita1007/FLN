@@ -158,10 +158,10 @@ const Question = () => {
             className="dropdown"
             style={{ marginTop: "10px", marginRight: "10px" }}
           >
-            <option value="step1">Step 1</option>
-            <option value="step2">Step 2</option>
-            <option value="step3">Step 3</option>
-            <option value="step4">Step 4</option>
+            <option value="step1">कक्षा के बारे में जानकारी</option>
+            <option value="step2">भाषा शिक्षण के खंड</option>
+            <option value="step3">भाषा शिक्षण के खंड > मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
+            <option value="step4">भाषा शिक्षण के खंड > मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
           </select>
 
           {(step === "step2" || step === "step3") && (
@@ -213,7 +213,8 @@ const Question = () => {
                             <input
                               type="radio"
                               name={`${parentIndex}-${question.id}`}
-                              checked={opt.isChecked}
+                              checked={false}
+                              readOnly
                               onChange={() =>
                                 handleOptionChange(parentIndex, question.id, opt.id)
                               }
