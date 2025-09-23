@@ -111,6 +111,8 @@ const AnalysisPage = () => {
         }
       );
       setCountData(response?.data?.data || []);
+      console.log(response?.data?.data);
+
     } catch (error) {
       console.error("Failed to fetch analysis data", error);
       setCountData([]);
@@ -177,44 +179,56 @@ const AnalysisPage = () => {
   const chartDataArray = useMemo(() => {
     if (!countData?.length) return [];
 
-    return countData
-      .map((question, index) => {
-        const rawOptions = question?.option || [];
-        const chartData = rawOptions.map((opt, optIndex) => ({
-          id: optIndex + 1,
-          value: opt?.count || 0,
-          name: opt?.text || `Option ${optIndex + 1}`,
-        }));
+    return countData.map((question, index) => {
+      const rawOptions = question?.option || [];
 
-        if (!chartData.length) {
-          return null;
-        }
-
-        const totalResponses = chartData.reduce((sum, item) => sum + item.value, 0);
-        const chartDataWithShare = chartData.map((item) => ({
-          ...item,
-          share: totalResponses ? (item.value / totalResponses) * 100 : 0,
-          displayLabel: `${item.name} (${item.value.toLocaleString()})`,
-        }));
-        const dominantOption = chartDataWithShare.reduce(
-          (prev, current) => (current.value > prev.value ? current : prev),
-          chartDataWithShare[0]
-        );
-        const config = getChartConfig(chartDataWithShare);
-
+      // If no options (like input type), still include question
+      if (!rawOptions.length) {
         return {
           index: index + 1,
           questionText: question?.questionText || `Question ${index + 1}`,
-          chartData: chartDataWithShare,
-          type: config.type,
-          width: config.width,
-          totalResponses,
-          dominantOptionLabel: dominantOption?.name || "",
-          dominantOptionShare: dominantOption?.share || 0,
+          chartData: [],
+          type: "none", // custom type for input/dropdown
+          width: 6,
+          totalResponses: 0,
+          dominantOptionLabel: "",
+          dominantOptionShare: 0,
         };
-      })
-      .filter(Boolean);
+      }
+
+      const chartData = rawOptions.map((opt, optIndex) => ({
+        id: optIndex + 1,
+        value: opt?.count || 0,
+        name: opt?.text || `Option ${optIndex + 1}`,
+      }));
+
+      const totalResponses = chartData.reduce((sum, item) => sum + item.value, 0);
+      const chartDataWithShare = chartData.map((item) => ({
+        ...item,
+        share: totalResponses ? (item.value / totalResponses) * 100 : 0,
+        displayLabel: `${item.name} (${item.value.toLocaleString()})`,
+      }));
+
+      const dominantOption = chartDataWithShare.reduce(
+        (prev, current) => (current.value > prev.value ? current : prev),
+        chartDataWithShare[0]
+      );
+
+      const config = getChartConfig(chartDataWithShare);
+
+      return {
+        index: index + 1,
+        questionText: question?.questionText || `Question ${index + 1}`,
+        chartData: chartDataWithShare,
+        type: config.type,
+        width: config.width,
+        totalResponses,
+        dominantOptionLabel: dominantOption?.name || "",
+        dominantOptionShare: dominantOption?.share || 0,
+      };
+    });
   }, [countData]);
+
 
 
   useEffect(() => {
@@ -268,17 +282,18 @@ const AnalysisPage = () => {
         },
       },
       legend: {
+        type: "scroll",
         orient: "vertical",
-        right: 0,
-        top: "middle",
-        textStyle: { color: Colors.grey.g700, fontSize: 12 },
+        right: 10,
+        top: 20,
+        bottom: 20,
       },
       series: [
         {
           name: "Responses",
           type: "pie",
           radius: ["45%", "70%"],
-          center: ["40%", "50%"],
+          center: ["50%", "45%"],
           itemStyle: { borderRadius: 12, borderColor: "#fff", borderWidth: 2 },
           label: {
             show: true,
@@ -672,62 +687,84 @@ const AnalysisPage = () => {
                     {selectedQuestion.questionText}
                   </Typography>
 
-                  <Stack
-                    direction={{ xs: "column", md: "row" }}
-                    spacing={2}
-                    sx={{ mt: 1 }}
-                  >
-                    {[
-                      {
-                        id: "responses",
-                        label: "Total responses",
-                        value: selectedQuestion.totalResponses.toLocaleString(),
-                      },
-                      {
-                        id: "top-choice",
-                        label: "Top choice",
-                        value: selectedQuestion.dominantOptionLabel || "No responses yet",
-                      },
-                      {
-                        id: "share",
-                        label: "Top choice share",
-                        value: formatPercent(selectedQuestion.dominantOptionShare),
-                      },
-                    ].map((stat) => (
-                      <Box
-                        key={stat.id}
-                        sx={{
-                          flex: 1,
-                          borderRadius: 2.5,
-                          border: `1px solid ${alpha(Colors.primary.main, 0.12)}`,
-                          backgroundColor: alpha(Colors.primary.light, 0.08),
-                          px: 2,
-                          py: 1.5,
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          sx={{ color: Colors.grey.g600, textTransform: "uppercase", letterSpacing: 0.5 }}
-                        >
-                          {stat.label}
-                        </Typography>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontWeight: 600,
-                            color: Colors.grey.g800,
-                            mt: 0.5,
-                          }}
-                        >
-                          {stat.value}
-                        </Typography>
-                      </Box>
-                    ))}
+                  {/* Top stats (total responses, top choice, etc.) */}
+                  <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                    <Box sx={{ flex: 1, p: 1.5, borderRadius: 2, bgcolor: "#f7f9fc" }}>
+                      <Typography variant="caption" color="text.secondary">
+                        कुल प्रतिक्रियाएँ
+                      </Typography>
+                      <Typography variant="h6" fontWeight={600}>
+                        {selectedQuestion.totalResponses}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, p: 1.5, borderRadius: 2, bgcolor: "#f7f9fc" }}>
+                      <Typography variant="caption" color="text.secondary">
+                        TOP CHOICE
+                      </Typography>
+                      <Typography variant="h6" fontWeight={600}>
+                        {selectedQuestion.dominantOptionLabel}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ flex: 1, p: 1.5, borderRadius: 2, bgcolor: "#f7f9fc" }}>
+                      <Typography variant="caption" color="text.secondary">
+                        TOP CHOICE SHARE
+                      </Typography>
+                      <Typography variant="h6" fontWeight={600}>
+                        {selectedQuestion.dominantOptionShare.toFixed(1)}%
+                      </Typography>
+                    </Box>
                   </Stack>
 
-                  <Divider />
+                  {/* ✅ Scrollable Weeks Section */}
+                  <Box
+                    sx={{
+                      maxHeight: 300,        // fixed height for weeks list
+                      overflowY: "auto",     // vertical scroll
+                      pr: 1,                 // padding for scrollbar space
+                    }}
+                  >
+                    {selectedQuestion.chartData.map((option) => (
+                      <Box key={option.id} sx={{ mb: 1.5 }}>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: 500, color: "text.secondary" }}
+                          >
+                            {option.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: 600, color: "primary.main" }}
+                          >
+                            {`${formatPercent(option.share)} (${option.value.toLocaleString()})`}
+                          </Typography>
+                        </Stack>
+                        <LinearProgress
+                          variant="determinate"
+                          value={Math.min(option.share, 100)}
+                          sx={{
+                            mt: 0.75,
+                            height: 6,
+                            borderRadius: 999,
+                            backgroundColor: "rgba(25, 118, 210, 0.12)",
+                            "& .MuiLinearProgress-bar": {
+                              borderRadius: 999,
+                              background: "rgb(25, 118, 210)",
+                            },
+                          }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
 
-                  <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+
+                  {/* <Divider /> */}
+
+                  {/* <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
                     {selectedQuestion.chartData.map((option) => (
                       <Box key={option.id}>
                         <Stack
@@ -771,7 +808,7 @@ const AnalysisPage = () => {
                         />
                       </Box>
                     ))}
-                  </Box>
+                  </Box> */}
                 </CardContent>
               </Card>
             </Grid>
