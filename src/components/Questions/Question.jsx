@@ -148,11 +148,11 @@ const Question = () => {
       className="analysis-page"
       sx={{ bgcolor: Colors.bg.bg1, overflowX: "hidden", padding: { xs: 0 } }}
     >
-      <Header title={"Questionnaire"}/>
+      <Header title={"Questionnaire"} />
       <div className="container">
         <header className="header">
-          <h1>{data[0]?.title || "Questionnaire"}</h1>
-          <select
+          <h2 sx={{}}>{data[0]?.title || "Questionnaire"}</h2>
+          {/* <select
             value={step}
             onChange={(e) => setStep(e.target.value)}
             className="dropdown"
@@ -160,9 +160,22 @@ const Question = () => {
           >
             <option value="step1">कक्षा के बारे में जानकारी</option>
             <option value="step2">भाषा शिक्षण के खंड</option>
-            <option value="step3">भाषा शिक्षण के खंड > मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
-            <option value="step4">भाषा शिक्षण के खंड > मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
-          </select>
+            <option value="step3">भाषा शिक्षण के खंड {">"} मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
+            <option value="step4">भाषा शिक्षण के खंड {">"} मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
+          </select> */}
+          <div className="custom-select-wrapper">
+  <select
+    value={step}
+    onChange={(e) => setStep(e.target.value)}
+    className="dropdown"
+  >
+    <option value="step1">कक्षा के बारे में जानकारी</option>
+    <option value="step2">भाषा शिक्षण के खंड</option>
+    <option value="step3">भाषा शिक्षण के खंड {">"} मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
+    <option value="step4">भाषा शिक्षण के खंड {">"} मौखिक भाषा विकास एवं सम्बंधित लेखन</option>
+  </select>
+</div>
+
 
           {(step === "step2" || step === "step3") && (
             <select

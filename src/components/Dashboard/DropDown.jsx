@@ -31,6 +31,7 @@ const DropDown = React.forwardRef(({
   filter,
   reportCategory,
   questionDataList,
+  classDataList,
   sendData,
   selected
 }, ref) => {
@@ -41,6 +42,7 @@ const DropDown = React.forwardRef(({
   const [selectCluster, setSelectCluster] = useState("");
   const [selectSubject, setSelectSubject] = useState("1");
   const [selectClusterList, setSelectClusterList] = useState([]);
+  const [selectClass, setSelectClass] = useState("");
   const [disableDropdown, setDisableDropdown] = useState(false);
   const { token } = useAuth();
   const [selectStep, setSelectStep] = useState(
@@ -67,6 +69,8 @@ const DropDown = React.forwardRef(({
 
 
   };
+
+
 
   const handleChangeDistrict = (dist) => {
     const filterObj = {};
@@ -288,6 +292,12 @@ const DropDown = React.forwardRef(({
     fetchDistricts();
   }, []);
 
+  const handleClassChange = (classId) => {
+    setSelectClass(classId);
+    const filterObj = { ...filter, classId };
+    if (filterData) filterData(filterObj);
+  };
+
   // useEffect(() => {
   //   if (isInitialRender) {
   //     setIsInitialRender(false);
@@ -361,7 +371,7 @@ const DropDown = React.forwardRef(({
             />
           </Grid>
         )}
-        {questionDataList && (
+        {/* {questionDataList && (
           <Grid
             item
             xs={12}
@@ -377,6 +387,20 @@ const DropDown = React.forwardRef(({
               label={"Select Question"}
               id_variable="questionId"
               name_variable="questionText"
+              menu_first="none"
+            />
+          </Grid>
+        )} */}
+        {classDataList && (
+          <Grid item xs={12} sm={6} md={4} lg={2}>
+            <DropdownComp
+              value={selectClass}
+              multiMenu={classDataList}
+              id={"class-drop"}
+              getSelected={handleClassChange}
+              label={"Select Class"}
+              id_variable="classId"
+              name_variable="className"
               menu_first="none"
             />
           </Grid>
@@ -507,39 +531,6 @@ const DropDown = React.forwardRef(({
             />
           </Grid>
         )}
-
-        {/* <Grid item xs={12} sm={6} md={4} lg={1} sx={{ ml: "auto" }}>
-          <FormControl size="small" sx={{ display: "flex" }}>
-            <Button
-              variant="outlined"
-              // color="secondary"
-              size="medium"
-              // startIcon={<SettingsBackupRestoreIcon />}
-              startIcon={
-                <img
-                  src={Restart}
-                  alt="reset-icon"
-                  style={{ width: "20px", height: "20px" }}
-                />
-              }
-              onClick={resetFunction}
-              sx={{
-                alignSelf: "flex-end",
-                color: Colors.bg.bg3,
-                borderRadius: "6px",
-                borderColor: Colors.bg.bg3,
-                fontWeight: "bold",
-                fontSize:"14px",
-                // background: Colors.gradient.shades,
-                // "&:hover": {
-                //   background: Colors.onHover.shades,
-                //  },
-              }}
-            >
-              Reset
-            </Button>
-          </FormControl>
-        </Grid> */}
         <Grid item xs={12} sm={6} md={4} lg={1} sx={{ ml: "auto" }}>
           <FormControl size="small" sx={{ display: "flex" }}>
             <Button

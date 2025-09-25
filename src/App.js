@@ -64,7 +64,7 @@ function App() {
               </PrivateRoute>
             }
           ></Route>
-           <Route
+          <Route
             path="/visit"
             element={
               <PrivateRoute>

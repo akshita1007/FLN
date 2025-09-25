@@ -72,6 +72,7 @@
 
 
 import React, { useState, useEffect } from "react";
+import { Colors } from "../../utils/Theme/Colors";
 import DropDown from "../Dashboard/DropDown";
 import {
   Card,
@@ -133,7 +134,7 @@ const CacListPage = () => {
       <Header title={"CAC LIST"} />
 
       {/* DropDown */}
-      <Box sx={{ p: "20px", mb: "25px" }}>
+      <Box sx={{ p: "15px", }}>
         <Card sx={{ boxShadow: "none" }}>
           <CardContent>
             <DropDown filterData={onFilterUpdate} isDate={true} filter={filter} fullWidth />
@@ -152,7 +153,7 @@ const CacListPage = () => {
             ) : (
               <TableContainer component={Paper}>
                 <Table>
-                  <TableHead sx={{ backgroundColor: "#2563eb" }}>
+                  <TableHead sx={{ background: Colors.gradient.shades }}>
                     <TableRow >
                       <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>Name</TableCell>
                       <TableCell sx={{ color: "#ffffff", fontWeight: 600 }}>District</TableCell>
@@ -175,7 +176,7 @@ const CacListPage = () => {
                         <TableCell>{row.Block}</TableCell>
                         <TableCell>{row.cluster_name}</TableCell>
                         <TableCell>{row.cac_mobile}</TableCell>
-                        <TableCell>{row.visitSchoolCount}</TableCell>
+                        <TableCell style={{ textAlign: "center" }}>{row.visitSchoolCount}</TableCell>
                         <TableCell>{row.visitClass?.class_1 ?? 0}</TableCell>
                         <TableCell>{row.visitClass?.class_2 ?? 0}</TableCell>
                         <TableCell>{row.visitClass?.class_3 ?? 0}</TableCell>

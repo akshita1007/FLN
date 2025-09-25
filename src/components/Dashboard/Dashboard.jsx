@@ -170,7 +170,7 @@ const Dashboard = () => {
   // 📊 Card Widgets
   const cardWidgets = [
     {
-      title: "Total Schools",
+      title: "Total Primary Schools",
       total: cardCount.totalSchool || 0,
       icon: totalSchoolicon,
       color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
@@ -184,7 +184,7 @@ const Dashboard = () => {
       shade: "linear-gradient(135deg, #fefae0 0%, #fefae0 100%)",
     },
     {
-      title: "Total Survey",
+      title: "Total Surveys",
       total: cardCount.totalSubmission || 0,
       icon: surveyicon,
       color: "linear-gradient(135deg, #003566 0%, #023e8a 100%)",
